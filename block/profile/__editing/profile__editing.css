@@ -1,0 +1,11 @@
+.profile__editing {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 18px;
+}
