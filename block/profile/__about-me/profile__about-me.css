@@ -4,3 +4,12 @@
   line-height: 22px;
   margin: 16px 0 0 0;
 }
+
+@media screen and (max-width: 880px) {
+  .profile__about-me {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

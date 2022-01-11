@@ -9,3 +9,7 @@
   align-items: center;
   margin-left: 18px;
 }
+
+.profile__editing:hover {
+  opacity: 0.6;
+}

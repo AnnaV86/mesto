@@ -3,3 +3,15 @@
   width: 880px;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
 }
+
+@media screen and (max-width: 879px) {
+  .header {
+    width: 100vw;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header {
+    min-height: 84px;
+  }
+}
