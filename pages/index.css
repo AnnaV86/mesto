@@ -24,11 +24,11 @@
 @import url(../block/input/input.css);
 @import url(../block/popup/__save/popup__save.css);
 @import url(../block/popup/__close/popup__close.css);
-@import url(../block/elements/__items/items.css);
+@import url(../block/elements/__items/elements__items.css);
 @import url(../block/elements/elements.css);
 @import url(../block/elements/__title-like/title-like.css);
-@import url(../block/elements/__title/title.css);
-@import url(../block/elements/__like/elements__like.css);
-@import url(../block/elements/__photo/photo.css);
+@import url(../block/elements/__title/elements__title.css);
+@import url(../block/elements/__title-like/elements__title-like.css);
+@import url(../block/elements/__photo/elements__photo.css);
 @import url(../block/footer/footer.css);
 @import url(../block/footer/__info/footer__info.css);
