@@ -4,4 +4,7 @@
   width: 100%;
   min-height: 57px;
   box-sizing: border-box;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
 }

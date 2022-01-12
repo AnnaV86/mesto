@@ -4,5 +4,10 @@
   color: #545454;
   font-weight: normal;
   margin: 0;
-  margin-left: 19px;
+}
+
+@media screen and (max-width: 880px) {
+  .footer__info {
+    margin-left: 19px;
+  }
 }
