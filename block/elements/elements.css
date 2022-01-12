@@ -6,7 +6,7 @@
   margin: 0;
 }
 
-@media screen and (max-width: 880px) {
+@media screen and (max-width: 900px) {
   .elements {
     min-width: 581px;
   }
