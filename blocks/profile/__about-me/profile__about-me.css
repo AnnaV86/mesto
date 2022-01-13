@@ -15,10 +15,11 @@
     text-align: center;
     font-size: 14px;
     line-height: 17px;
+    max-width: 581px;
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 619px) {
   .profile__about-me {
     max-width: 282px;
   }

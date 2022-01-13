@@ -4,8 +4,8 @@ const popupClose = document.querySelector('.popup__close');
 const popupSave = document.querySelector('.popup__save');
 let profileName = document.querySelector('.profile__name');
 let profileAboutMe = document.querySelector('.profile__about-me');
-profileName.insertAdjacentText('afterbegin', 'Жак-Ив Кусто');
-profileAboutMe.insertAdjacentText('afterbegin', 'Исследователь океана');
+// profileName.insertAdjacentText('afterbegin', 'Жак-Ив Кусто');
+// profileAboutMe.insertAdjacentText('afterbegin', 'Исследователь океана');
 let nameText = document.querySelector('.popup__name-text');
 let aboutMe = document.querySelector('.popup__about-me');
 
