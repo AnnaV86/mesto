@@ -1,6 +1,6 @@
 .elements__title-like {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   padding: 25px 15px 31px 21px;
   box-sizing: border-box;
