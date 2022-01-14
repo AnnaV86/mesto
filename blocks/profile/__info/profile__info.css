@@ -8,13 +8,15 @@
 
 @media screen and (max-width: 900px) {
   .profile__info {
-    margin: 22.25px 0 36px;
-    max-width: 581px;
+    margin: 26px 0 33px;
+    max-width: 282px;
+    justify-content: center;
   }
 }
 
 @media screen and (max-width: 619px) {
   .profile__info {
-    max-width: 282px;
+    justify-content: center;
+    position: relative;
   }
 }
