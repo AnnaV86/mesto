@@ -7,25 +7,25 @@ let profileAboutMe = document.querySelector('.profile__about-me');
 let nameText = document.querySelector('#profName');
 let aboutMe = document.querySelector('#profAboutMe');
 
-function popupOpen() {
+function profilePopupOpen() {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
   popup.classList.add('popup_opened');
 }
 
-profileEditing.addEventListener('click', popupOpen);
+profileEditing.addEventListener('click', profilePopupOpen);
 
-function popupClose() {
+function profilePopupClose() {
   popup.classList.remove('popup_opened');
 }
 
-popupClose.addEventListener('click', popupClose);
+popupClose.addEventListener('click', profilePopupClose);
 
 function popupSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameText.value;
   profileAboutMe.textContent = aboutMe.value;
-  popupClose();
+  profilePopupClose();
 }
 
 popupSave.addEventListener('submit', popupSubmit);
