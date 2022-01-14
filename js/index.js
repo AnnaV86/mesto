@@ -4,31 +4,28 @@ const popupClose = document.querySelector('.popup__close');
 const popupSave = document.querySelector('.popup__input');
 let profileName = document.querySelector('.profile__name');
 let profileAboutMe = document.querySelector('.profile__about-me');
-
-// profileName.insertAdjacentText('afterbegin', 'Жак-Ив Кусто');
-// profileAboutMe.insertAdjacentText('afterbegin', 'Исследователь океана');
 let nameText = document.querySelector('#profName');
 let aboutMe = document.querySelector('#profAboutMe');
 
-function PopupOpen() {
+function popupOpen() {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
   popup.classList.add('popup_opened');
 }
 
-profileEditing.addEventListener('click', PopupOpen);
+profileEditing.addEventListener('click', popupOpen);
 
-function PopupClose() {
+function popupClose() {
   popup.classList.remove('popup_opened');
 }
 
-popupClose.addEventListener('click', PopupClose);
+popupClose.addEventListener('click', popupClose);
 
 function popupSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameText.value;
   profileAboutMe.textContent = aboutMe.value;
-  PopupClose();
+  popupClose();
 }
 
 popupSave.addEventListener('submit', popupSubmit);
