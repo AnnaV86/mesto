@@ -37,14 +37,23 @@ const elements = document.querySelector('.elements');
 const newCard = document.querySelector('.profile__new');
 const placePopup = document.querySelector('.popup__place');
 
+const buttonLike = (evt) => {
+  evt.target.classList.toggle('like-active');
+};
+
 const render = (arr) => {
   if (arr.length === 1) {
     const cardElement = cardPlaсe
       .querySelector('.element-item')
       .cloneNode(true);
+    console.log(cardElement);
     cardElement.querySelector('.element-item__photo').src = arr[0].link;
     cardElement.querySelector('.element-item__title').textContent = arr[0].name;
+    cardElement
+      .querySelector('.element-item__like')
+      .addEventListener('click', (evt) => buttonLike(evt));
     elements.prepend(cardElement);
+    deleteCardElement();
   } else {
     for (let i = 0; i <= arr.length - 1; i++) {
       const cardElement = cardPlaсe
@@ -53,6 +62,9 @@ const render = (arr) => {
       cardElement.querySelector('.element-item__photo').src = arr[i].link;
       cardElement.querySelector('.element-item__title').textContent =
         arr[i].name;
+      cardElement
+        .querySelector('.element-item__like')
+        .addEventListener('click', (evt) => buttonLike(evt));
       elements.append(cardElement);
     }
   }
@@ -84,17 +96,13 @@ popupClose.forEach((item) => {
 });
 
 function popupSubmit(evt) {
-  console.log(evt);
   const popup = evt.target.closest('.popup');
-  console.log(popup);
   if (popup.classList.contains('popup__profile')) {
-    console.log('start');
     evt.preventDefault();
     profileName.textContent = nameText.value;
     profileAboutMe.textContent = aboutMe.value;
     PopupClose(evt);
   } else if (popup.classList.contains('popup__place')) {
-    console.log('start');
     evt.preventDefault();
     const newElement = [
       {
@@ -109,14 +117,18 @@ function popupSubmit(evt) {
 
 popupSave.forEach((item) => {
   item.addEventListener('submit', (evt) => {
-    console.log(evt);
     popupSubmit(evt);
   });
 });
 
-elements.querySelectorAll('.element-item__like').forEach((item) => {
-  item.addEventListener('click', (evt) => {
-    console.log(evt);
-    evt.target.classList.toggle('like-active');
+const deleteCardElement = () => {
+  const cardDelete = elements.querySelectorAll('.element-item__delete');
+  cardDelete.forEach((item) => {
+    item.addEventListener('click', function () {
+      const elementDelete = item.closest('.element-item');
+      elementDelete.remove();
+    });
   });
-});
+};
+
+deleteCardElement();
