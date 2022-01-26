@@ -1,12 +1,11 @@
-const popup = document.querySelector('.popup');
+const popupProfile = document.querySelector('.popup__profile');
 const profileEditing = document.querySelector('.profile__editing');
-const popupClose = document.querySelector('.popup__close');
-const popupSave = document.querySelector('.popup__input');
+const popupClose = document.querySelectorAll('.popup__close');
+const popupSave = document.querySelectorAll('.popup__input');
 let profileName = document.querySelector('.profile__name');
 let profileAboutMe = document.querySelector('.profile__about-me');
 let nameText = document.querySelector('#profName');
 let aboutMe = document.querySelector('#profAboutMe');
-
 const initialCards = [
   {
     name: 'Архыз',
@@ -33,38 +32,84 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
   },
 ];
-
 const cardPlaсe = document.querySelector('#element-item').content;
 const elements = document.querySelector('.elements');
+const newCard = document.querySelector('.profile__new');
+const placePopup = document.querySelector('.popup__place');
 
-for (let i = 0; i <= initialCards.length - 1; i++) {
-  const cardElement = cardPlaсe.querySelector('.element-item').cloneNode(true);
-  cardElement.querySelector('.element-item__photo').src = initialCards[i].link;
-  cardElement.querySelector('.element-item__title').textContent =
-    initialCards[i].name;
-  elements.append(cardElement);
-  console.log(elements);
-}
+const render = (arr) => {
+  if (arr.length === 1) {
+    const cardElement = cardPlaсe
+      .querySelector('.element-item')
+      .cloneNode(true);
+    cardElement.querySelector('.element-item__photo').src = arr[0].link;
+    cardElement.querySelector('.element-item__title').textContent = arr[0].name;
+    elements.prepend(cardElement);
+  } else {
+    for (let i = 0; i <= arr.length - 1; i++) {
+      const cardElement = cardPlaсe
+        .querySelector('.element-item')
+        .cloneNode(true);
+      cardElement.querySelector('.element-item__photo').src = arr[i].link;
+      cardElement.querySelector('.element-item__title').textContent =
+        arr[i].name;
+      elements.append(cardElement);
+    }
+  }
+};
+render(initialCards);
 
 function profilePopupOpen() {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
-  popup.classList.add('popup_opened');
+  popupProfile.classList.add('popup_opened');
+}
+
+function newCardPopupOpen() {
+  placePopup.classList.add('popup_opened');
 }
 
 profileEditing.addEventListener('click', profilePopupOpen);
+newCard.addEventListener('click', newCardPopupOpen);
 
-function profilePopupClose() {
+function PopupClose(evt) {
+  const popup = evt.target.closest('.popup');
   popup.classList.remove('popup_opened');
 }
 
-popupClose.addEventListener('click', profilePopupClose);
+popupClose.forEach((item) => {
+  item.addEventListener('click', (evt) => {
+    PopupClose(evt);
+  });
+});
 
 function popupSubmit(evt) {
-  evt.preventDefault();
-  profileName.textContent = nameText.value;
-  profileAboutMe.textContent = aboutMe.value;
-  profilePopupClose();
+  console.log(evt);
+  const popup = evt.target.closest('.popup');
+  console.log(popup);
+  if (popup.classList.contains('popup__profile')) {
+    console.log('start');
+    evt.preventDefault();
+    profileName.textContent = nameText.value;
+    profileAboutMe.textContent = aboutMe.value;
+    PopupClose(evt);
+  } else if (popup.classList.contains('popup__place')) {
+    console.log('start');
+    evt.preventDefault();
+    const newElement = [
+      {
+        name: placeName.value,
+        link: placeLink.value,
+      },
+    ];
+    render(newElement);
+    PopupClose(evt);
+  }
 }
 
-popupSave.addEventListener('submit', popupSubmit);
+popupSave.forEach((item) => {
+  item.addEventListener('submit', (evt) => {
+    console.log(evt);
+    popupSubmit(evt);
+  });
+});
