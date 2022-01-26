@@ -1,6 +1,6 @@
-const imgPopup = document.querySelector('.popup__img');
-const placePopup = document.querySelector('.popup__place');
-const profilePopup = document.querySelector('.popup__profile');
+const imgPopup = document.querySelector('.popup_type_img');
+const placePopup = document.querySelector('.popup_type_place');
+const profilePopup = document.querySelector('.popup_type_profile');
 const popupsClose = document.querySelectorAll('.popup__close');
 const popupsSave = document.querySelectorAll('.popup__input');
 const profileName = document.querySelector('.profile__name');
@@ -124,12 +124,12 @@ const submitPopup = (evt) => {
 
   evt.preventDefault();
 
-  if (popup.classList.contains('popup__profile')) {
+  if (popup.classList.contains('popup_type_profile')) {
     profileName.textContent = nameText.value;
     profileAboutMe.textContent = aboutMe.value;
 
     closePopup(evt);
-  } else if (popup.classList.contains('popup__place')) {
+  } else if (popup.classList.contains('popup_type_place')) {
     const newElement = [
       {
         name: placeName.value,
