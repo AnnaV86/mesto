@@ -1,6 +1,7 @@
 .element-item__title {
   color: black;
   margin: 0;
+  max-width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

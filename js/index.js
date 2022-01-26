@@ -113,3 +113,10 @@ popupSave.forEach((item) => {
     popupSubmit(evt);
   });
 });
+
+elements.querySelectorAll('.element-item__like').forEach((item) => {
+  item.addEventListener('click', (evt) => {
+    console.log(evt);
+    evt.target.classList.toggle('like-active');
+  });
+});
