@@ -32,3 +32,7 @@
 @import url(../blocks/element-item/__delete/element-item__delete.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__info/footer__info.css);
+@import url(../blocks/popup/__container-img/popup__container-img.css);
+@import url(../blocks/popup/__title-img/popup__title-img.css);
+@import url(../blocks/popup/__photo-img/popup__photo-img.css);
+@import url(../blocks/popup/__img/popup__img.css);
