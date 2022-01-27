@@ -4,7 +4,6 @@ const imgPopup = document.querySelector('.popup_type_img');
 const placePopup = document.querySelector('.popup_type_place');
 const profilePopup = document.querySelector('.popup_type_profile');
 const popupsClose = document.querySelectorAll('.popup__close');
-const popupsSave = document.querySelectorAll('.popup__input');
 const profileName = document.querySelector('.profile__name');
 const profileEditing = document.querySelector('.profile__editing');
 const profileAboutMe = document.querySelector('.profile__about-me');
@@ -13,6 +12,10 @@ const aboutMe = document.querySelector('#profAboutMe');
 const placeCard = document.querySelector('#element-item').content;
 const elements = document.querySelector('.elements');
 const newCard = document.querySelector('.profile__new');
+const photoElementBig = document.querySelector('.popup__photo-img');
+const photoElementBigTitle = document.querySelector('.popup__title-img');
+const profilePopupForm = profilePopup.querySelector('.popup__input');
+const placePopupForm = placePopup.querySelector('.popup__input');
 
 const togglePopup = (element) => {
   element.classList.toggle('popup_opened');
@@ -32,54 +35,46 @@ const listenerLike = (cardElement) =>
       evt.target.classList.toggle('like-active');
     });
 
-const createCard = (photoElement, name, link) => {
-  photoElement.src = link;
-  photoElement.alt = name;
-};
-
-const displayCard = (cardElement, { name, link }) => {
-  const photoElement = cardElement.querySelector('.element-item__photo');
-  cardElement.querySelector('.element-item__title').textContent = name;
-  createCard(photoElement, name, link);
-
-  photoElement.addEventListener('click', () => {
-    const photoElement = document.querySelector('.popup__photo-img');
-    document.querySelector('.popup__title-img').textContent = name;
-    createCard(photoElement, name, link);
-
-    togglePopup(imgPopup);
-  });
-};
-
-const renderCard = (cards, cardElement) => {
-  if (cards.length === 1) {
-    elements.prepend(cardElement);
+const renderCard = (card, container, isPrepend) => {
+  if (isPrepend) {
+    container.prepend(card);
   } else {
-    elements.append(cardElement);
+    container.append(card);
   }
 };
 
-const createCards = (cards) => {
-  cards.forEach((card) => {
-    const cardElement = placeCard
-      .querySelector('.element-item')
-      .cloneNode(true);
+const createCard = ({ name, link }) => {
+  const cardElement = placeCard.querySelector('.element-item').cloneNode(true);
+  cardElement.querySelector('.element-item__title').textContent = name;
+  const photoElement = cardElement.querySelector('.element-item__photo');
+  photoElement.src = link;
+  photoElement.alt = name;
 
-    deleteCard(cardElement);
+  deleteCard(cardElement);
 
-    listenerLike(cardElement);
+  listenerLike(cardElement);
 
-    displayCard(cardElement, card);
+  photoElement.addEventListener('click', () => {
+    photoElementBigTitle.textContent = name;
+    photoElementBig.src = link;
+    photoElementBig.alt = name;
 
-    renderCard(cards, cardElement);
+    togglePopup(imgPopup);
   });
+
+  return cardElement;
 };
 
-createCards(initialCards);
+initialCards.forEach((element) => {
+  const card = createCard(element);
+
+  renderCard(card, elements, false);
+});
 
 const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
+
   togglePopup(profilePopup);
 };
 
@@ -88,6 +83,7 @@ profileEditing.addEventListener('click', openProfilePopup);
 const openNewCardPopup = () => {
   placeName.value = '';
   placeLink.value = '';
+
   togglePopup(placePopup);
 };
 
@@ -96,42 +92,34 @@ newCard.addEventListener('click', openNewCardPopup);
 popupsClose.forEach((item) => {
   item.addEventListener('click', (evt) => {
     const popup = evt.target.closest('.popup');
+
     togglePopup(popup);
   });
 });
 
-const editingProfile = (popup) => {
-  profileName.textContent = nameText.value;
-  profileAboutMe.textContent = aboutMe.value;
-  togglePopup(popup);
-};
-
-const addingCard = (popup) => {
-  const newElement = [
-    {
-      name: placeName.value,
-      link: placeLink.value,
-    },
-  ];
-  togglePopup(popup);
-
-  createCards(newElement);
-};
-
-const submitPopup = (evt) => {
+const editingProfile = (evt) => {
   evt.preventDefault();
 
-  const popup = evt.target.closest('.popup');
+  profileName.textContent = nameText.value;
+  profileAboutMe.textContent = aboutMe.value;
 
-  if (popup.classList.contains('popup_type_profile')) {
-    editingProfile(popup);
-  } else if (popup.classList.contains('popup_type_place')) {
-    addingCard(popup);
-  }
+  togglePopup(profilePopup);
 };
 
-popupsSave.forEach((item) => {
-  item.addEventListener('submit', (evt) => {
-    submitPopup(evt);
-  });
-});
+const addingCard = (evt) => {
+  evt.preventDefault();
+
+  const newElement = {
+    name: placeName.value,
+    link: placeLink.value,
+  };
+
+  const card = createCard(newElement);
+
+  renderCard(card, elements, true);
+
+  togglePopup(placePopup);
+};
+
+profilePopupForm.addEventListener('submit', editingProfile);
+placePopupForm.addEventListener('submit', addingCard);
