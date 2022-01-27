@@ -2,4 +2,9 @@
   display: block;
   width: 282px;
   height: 282px;
+  cursor: pointer;
+}
+
+.element-item__photo:hover {
+  opacity: 0.5;
 }

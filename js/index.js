@@ -1,3 +1,5 @@
+import { initialCards } from './initialCards.js';
+
 const imgPopup = document.querySelector('.popup_type_img');
 const placePopup = document.querySelector('.popup_type_place');
 const profilePopup = document.querySelector('.popup_type_profile');
@@ -11,32 +13,10 @@ const aboutMe = document.querySelector('#profAboutMe');
 const placeCard = document.querySelector('#element-item').content;
 const elements = document.querySelector('.elements');
 const newCard = document.querySelector('.profile__new');
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-  },
-];
+
+const togglePopup = (element) => {
+  element.classList.toggle('popup_opened');
+};
 
 const deleteCard = (cardElement) =>
   cardElement
@@ -52,25 +32,28 @@ const listenerLike = (cardElement) =>
       evt.target.classList.toggle('like-active');
     });
 
-const displayCard = (cardElement, cards, index) => {
+const displayCard = (cardElement, card) => {
   const photoElement = cardElement.querySelector('.element-item__photo');
-  photoElement.src = cards[index].link;
+  const cardName = card.name;
+  photoElement.src = card.link;
+  photoElement.alt = cardName;
   const titleElement = (cardElement.querySelector(
     '.element-item__title'
-  ).textContent = cards[index].name);
+  ).textContent = cardName);
 
   photoElement.addEventListener('click', () => {
     const photo = document.querySelector('.popup__photo-img');
     const title = document.querySelector('.popup__title-img');
     title.textContent = titleElement;
-    photo.src = cards[index].link;
+    photo.src = card.link;
+    photo.alt = card.name;
 
-    imgPopup.classList.add('popup_opened');
+    togglePopup(imgPopup);
   });
 };
 
 const renderCards = (cards) => {
-  for (let index = 0; index <= cards.length - 1; index++) {
+  cards.forEach((card) => {
     const cardElement = placeCard
       .querySelector('.element-item')
       .cloneNode(true);
@@ -79,14 +62,14 @@ const renderCards = (cards) => {
 
     listenerLike(cardElement);
 
-    displayCard(cardElement, cards, index);
+    displayCard(cardElement, card);
 
     if (cards.length === 1) {
       elements.prepend(cardElement);
     } else {
       elements.append(cardElement);
     }
-  }
+  });
 };
 
 renderCards(initialCards);
@@ -94,7 +77,7 @@ renderCards(initialCards);
 const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
-  profilePopup.classList.add('popup_opened');
+  togglePopup(profilePopup);
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
@@ -102,20 +85,15 @@ profileEditing.addEventListener('click', openProfilePopup);
 const openNewCardPopup = () => {
   placeName.value = null;
   placeLink.value = null;
-  placePopup.classList.add('popup_opened');
+  togglePopup(placePopup);
 };
 
 newCard.addEventListener('click', openNewCardPopup);
 
-const closePopup = (evt) => {
-  const popup = evt.target.closest('.popup');
-
-  popup.classList.remove('popup_opened');
-};
-
 popupsClose.forEach((item) => {
   item.addEventListener('click', (evt) => {
-    closePopup(evt);
+    const popup = evt.target.closest('.popup');
+    togglePopup(popup);
   });
 });
 
@@ -127,8 +105,7 @@ const submitPopup = (evt) => {
   if (popup.classList.contains('popup_type_profile')) {
     profileName.textContent = nameText.value;
     profileAboutMe.textContent = aboutMe.value;
-
-    closePopup(evt);
+    togglePopup(popup);
   } else if (popup.classList.contains('popup_type_place')) {
     const newElement = [
       {
@@ -136,8 +113,7 @@ const submitPopup = (evt) => {
         link: placeLink.value,
       },
     ];
-
-    closePopup(evt);
+    togglePopup(popup);
 
     renderCards(newElement);
   }
