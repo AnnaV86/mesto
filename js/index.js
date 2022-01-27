@@ -32,27 +32,34 @@ const listenerLike = (cardElement) =>
       evt.target.classList.toggle('like-active');
     });
 
-const displayCard = (cardElement, card) => {
+const createCard = (photoElement, name, link) => {
+  photoElement.src = link;
+  photoElement.alt = name;
+};
+
+const displayCard = (cardElement, { name, link }) => {
   const photoElement = cardElement.querySelector('.element-item__photo');
-  const cardName = card.name;
-  photoElement.src = card.link;
-  photoElement.alt = cardName;
-  const titleElement = (cardElement.querySelector(
-    '.element-item__title'
-  ).textContent = cardName);
+  cardElement.querySelector('.element-item__title').textContent = name;
+  createCard(photoElement, name, link);
 
   photoElement.addEventListener('click', () => {
-    const photo = document.querySelector('.popup__photo-img');
-    const title = document.querySelector('.popup__title-img');
-    title.textContent = titleElement;
-    photo.src = card.link;
-    photo.alt = card.name;
+    const photoElement = document.querySelector('.popup__photo-img');
+    document.querySelector('.popup__title-img').textContent = name;
+    createCard(photoElement, name, link);
 
     togglePopup(imgPopup);
   });
 };
 
-const renderCards = (cards) => {
+const renderCard = (cards, cardElement) => {
+  if (cards.length === 1) {
+    elements.prepend(cardElement);
+  } else {
+    elements.append(cardElement);
+  }
+};
+
+const createCards = (cards) => {
   cards.forEach((card) => {
     const cardElement = placeCard
       .querySelector('.element-item')
@@ -64,15 +71,11 @@ const renderCards = (cards) => {
 
     displayCard(cardElement, card);
 
-    if (cards.length === 1) {
-      elements.prepend(cardElement);
-    } else {
-      elements.append(cardElement);
-    }
+    renderCard(cards, cardElement);
   });
 };
 
-renderCards(initialCards);
+createCards(initialCards);
 
 const openProfilePopup = () => {
   nameText.value = profileName.textContent;
@@ -83,8 +86,8 @@ const openProfilePopup = () => {
 profileEditing.addEventListener('click', openProfilePopup);
 
 const openNewCardPopup = () => {
-  placeName.value = null;
-  placeLink.value = null;
+  placeName.value = '';
+  placeLink.value = '';
   togglePopup(placePopup);
 };
 
@@ -97,25 +100,33 @@ popupsClose.forEach((item) => {
   });
 });
 
-const submitPopup = (evt) => {
-  const popup = evt.target.closest('.popup');
+const editingProfile = (popup) => {
+  profileName.textContent = nameText.value;
+  profileAboutMe.textContent = aboutMe.value;
+  togglePopup(popup);
+};
 
+const addingCard = (popup) => {
+  const newElement = [
+    {
+      name: placeName.value,
+      link: placeLink.value,
+    },
+  ];
+  togglePopup(popup);
+
+  createCards(newElement);
+};
+
+const submitPopup = (evt) => {
   evt.preventDefault();
 
-  if (popup.classList.contains('popup_type_profile')) {
-    profileName.textContent = nameText.value;
-    profileAboutMe.textContent = aboutMe.value;
-    togglePopup(popup);
-  } else if (popup.classList.contains('popup_type_place')) {
-    const newElement = [
-      {
-        name: placeName.value,
-        link: placeLink.value,
-      },
-    ];
-    togglePopup(popup);
+  const popup = evt.target.closest('.popup');
 
-    renderCards(newElement);
+  if (popup.classList.contains('popup_type_profile')) {
+    editingProfile(popup);
+  } else if (popup.classList.contains('popup_type_place')) {
+    addingCard(popup);
   }
 };
 
