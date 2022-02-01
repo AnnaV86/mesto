@@ -134,7 +134,7 @@ const addingCard = (evt) => {
 };
 
 popups.forEach((item) => {
-  item.addEventListener('click', (evt) => {
+  item.addEventListener('mousedown', (evt) => {
     if (evt.target === evt.currentTarget) {
       togglePopup(item);
     }
