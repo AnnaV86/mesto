@@ -55,13 +55,24 @@
       <div class="popup popup_type_profile">
         <div class="popup__container">
           <h2 class="popup__heading">Редактировать профиль</h2>
-          <form class="popup__input" name="profileForm">
-            <input class="input" type="text" name="profileName" id="profName" />
+          <form class="popup__input" name="profileForm" novalidate>
+            <input
+              class="input"
+              type="text"
+              name="profileName"
+              id="profName"
+              required
+              minlength="2"
+              maxlength="30"
+            />
             <input
               class="input"
               type="text"
               name="profileAboutMe"
               id="profAboutMe"
+              required
+              minlength="2"
+              maxlength="200"
             />
             <button class="popup__save" type="submit">Сохранить</button>
           </form>
@@ -75,20 +86,24 @@
       <div class="popup popup_type_place">
         <div class="popup__container">
           <h2 class="popup__heading">Новое место</h2>
-          <form class="popup__input" name="NewPlace">
+          <form class="popup__input" name="NewPlace" novalidate>
             <input
               class="input"
               type="text"
               name="placeName"
               id="placeName"
               placeholder="Название"
+              required
+              minlength="2"
+              maxlength="30"
             />
             <input
               class="input"
-              type="text"
+              type="url"
               name="placeLink"
               id="placeLink"
               placeholder="Ссылка на картинку"
+              required
             />
             <button class="popup__save" type="submit">Сохранить</button>
           </form>
