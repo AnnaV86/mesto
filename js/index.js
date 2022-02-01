@@ -19,25 +19,51 @@ const profilePopupForm = profilePopup.querySelector('.popup__form');
 const placePopupForm = placePopup.querySelector('.popup__form');
 const popups = document.querySelectorAll('.popup');
 
-const togglePopup = (element) => {
-  element.classList.toggle('popup_opened');
-  if (!element.classList.contains('popup_opened')) {
+const clearElement = (element) => {
+  element
+    .querySelectorAll('.popup__error')
+    .forEach((item) => item.classList.remove(config.errorClass));
+
+  element
+    .querySelectorAll(config.inputSelector)
+    .forEach((item) => item.classList.remove(config.inputErrorClass));
+};
+
+const closePopup = (element) => {
+  element.classList.remove('popup_opened');
+};
+
+const statusButton = (element) => {
+  const isInputFilled = Array.from(
+    element.querySelectorAll('.popup__input')
+  ).every((string) => string.value.length > 2);
+
+  if (!isInputFilled) {
     element
-      .querySelectorAll('.popup__error')
-      .forEach((item) => item.classList.remove(config.errorClass));
+      .querySelector('.popup__button')
+      .classList.add(config.inactiveButtonClass);
+  } else {
     element
-      .querySelectorAll(config.inputSelector)
-      .forEach((item) => item.classList.remove(config.inputErrorClass));
-    document.removeEventListener('keydown', checkKeyEsc);
+      .querySelector('.popup__button')
+      .classList.remove(config.inactiveButtonClass);
   }
+};
+
+const openPopup = (element) => {
+  element.classList.add('popup_opened');
 };
 
 const popupCloseEsc = (element) => {
   const checkKeyEsc = (evt) => {
     if (evt.key === 'Escape') {
-      element.classList.remove('popup_opened');
+      closePopup(element);
+
+      clearElement(element);
+
+      document.removeEventListener('keydown', checkKeyEsc);
     }
   };
+
   document.addEventListener('keydown', checkKeyEsc);
 };
 
@@ -65,8 +91,8 @@ const renderCard = (card, container, isPrepend) => {
 
 const createCard = ({ name, link }) => {
   const cardElement = placeCard.querySelector('.element-item').cloneNode(true);
-  cardElement.querySelector('.element-item__title').textContent = name;
   const photoElement = cardElement.querySelector('.element-item__photo');
+  cardElement.querySelector('.element-item__title').textContent = name;
   photoElement.src = link;
   photoElement.alt = name;
 
@@ -79,7 +105,7 @@ const createCard = ({ name, link }) => {
     photoElementBig.src = link;
     photoElementBig.alt = name;
 
-    togglePopup(imgPopup);
+    openPopup(imgPopup);
 
     popupCloseEsc(imgPopup);
   });
@@ -97,7 +123,9 @@ const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
 
-  togglePopup(profilePopup);
+  openPopup(profilePopup);
+
+  statusButton(profilePopup);
 
   popupCloseEsc(profilePopup);
 };
@@ -108,7 +136,9 @@ const openNewCardPopup = () => {
   placeName.value = '';
   placeLink.value = '';
 
-  togglePopup(placePopup);
+  openPopup(placePopup);
+
+  statusButton(placePopup);
 
   popupCloseEsc(placePopup);
 };
@@ -119,7 +149,9 @@ popupsClose.forEach((item) => {
   item.addEventListener('click', (evt) => {
     const popup = evt.target.closest('.popup');
 
-    togglePopup(popup);
+    closePopup(popup);
+
+    clearElement(popup);
   });
 });
 
@@ -129,8 +161,12 @@ const editingProfile = (evt) => {
   profileName.textContent = nameText.value;
   profileAboutMe.textContent = aboutMe.value;
 
-  togglePopup(profilePopup);
+  closePopup(profilePopup);
+
+  clearElement(profilePopup);
 };
+
+profilePopupForm.addEventListener('submit', editingProfile);
 
 const addingCard = (evt) => {
   evt.preventDefault();
@@ -144,16 +180,16 @@ const addingCard = (evt) => {
 
   renderCard(card, elements, true);
 
-  togglePopup(placePopup);
+  closePopup(placePopup);
 };
 
+placePopupForm.addEventListener('submit', addingCard);
 popups.forEach((item) => {
   item.addEventListener('mousedown', (evt) => {
     if (evt.target === evt.currentTarget) {
-      togglePopup(item);
+      closePopup(item);
+
+      clearElement(item);
     }
   });
 });
-
-profilePopupForm.addEventListener('submit', editingProfile);
-placePopupForm.addEventListener('submit', addingCard);
