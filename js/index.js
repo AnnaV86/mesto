@@ -14,8 +14,8 @@ const elements = document.querySelector('.elements');
 const newCard = document.querySelector('.profile__new');
 const photoElementBig = document.querySelector('.popup__photo-img');
 const photoElementBigTitle = document.querySelector('.popup__title-img');
-const profilePopupForm = profilePopup.querySelector('.popup__input');
-const placePopupForm = placePopup.querySelector('.popup__input');
+const profilePopupForm = profilePopup.querySelector('.popup__form');
+const placePopupForm = placePopup.querySelector('.popup__form');
 
 const togglePopup = (element) => {
   element.classList.toggle('popup_opened');
