@@ -1,4 +1,5 @@
 import { initialCards } from './initialCards.js';
+import { config } from './validate.js';
 
 const imgPopup = document.querySelector('.popup_type_img');
 const placePopup = document.querySelector('.popup_type_place');
@@ -20,14 +21,25 @@ const popups = document.querySelectorAll('.popup');
 
 const togglePopup = (element) => {
   element.classList.toggle('popup_opened');
+  if (!element.classList.contains('popup_opened')) {
+    element
+      .querySelectorAll('.popup__error')
+      .forEach((item) => item.classList.remove(config.errorClass));
+    element
+      .querySelectorAll(config.inputSelector)
+      .forEach((item) => item.classList.remove(config.inputErrorClass));
+    document.removeEventListener('keydown', checkKeyEsc);
+  }
 };
 
-const popupCloseEsc = (element) =>
-  document.addEventListener('keydown', function (evt) {
+const popupCloseEsc = (element) => {
+  const checkKeyEsc = (evt) => {
     if (evt.key === 'Escape') {
       element.classList.remove('popup_opened');
     }
-  });
+  };
+  document.addEventListener('keydown', checkKeyEsc);
+};
 
 const deleteCard = (cardElement) =>
   cardElement
@@ -68,6 +80,7 @@ const createCard = ({ name, link }) => {
     photoElementBig.alt = name;
 
     togglePopup(imgPopup);
+
     popupCloseEsc(imgPopup);
   });
 
@@ -96,6 +109,7 @@ const openNewCardPopup = () => {
   placeLink.value = '';
 
   togglePopup(placePopup);
+
   popupCloseEsc(placePopup);
 };
 

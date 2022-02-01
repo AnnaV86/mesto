@@ -1,3 +1,12 @@
+export const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
+
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
@@ -16,7 +25,6 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 
 const showInputError = (formElement, inputElement, errorMessage, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  console.log(`.${inputElement.id}-error`);
 
   inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
@@ -55,6 +63,7 @@ const setEventListeners = (formElement, config) => {
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement, config);
+
       toggleButtonState(inputList, buttonElement, config);
     });
   });
@@ -65,15 +74,9 @@ const enableValidation = (config) => {
 
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', (evt) => evt.preventDefault());
+
     setEventListeners(formElement, config);
   });
 };
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible',
-});
+enableValidation(config);
