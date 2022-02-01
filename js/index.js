@@ -16,10 +16,18 @@ const photoElementBig = document.querySelector('.popup__photo-img');
 const photoElementBigTitle = document.querySelector('.popup__title-img');
 const profilePopupForm = profilePopup.querySelector('.popup__form');
 const placePopupForm = placePopup.querySelector('.popup__form');
+const popups = document.querySelectorAll('.popup');
 
 const togglePopup = (element) => {
   element.classList.toggle('popup_opened');
 };
+
+const popupCloseEsc = (element) =>
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') {
+      element.classList.remove('popup_opened');
+    }
+  });
 
 const deleteCard = (cardElement) =>
   cardElement
@@ -60,6 +68,7 @@ const createCard = ({ name, link }) => {
     photoElementBig.alt = name;
 
     togglePopup(imgPopup);
+    popupCloseEsc(imgPopup);
   });
 
   return cardElement;
@@ -76,6 +85,8 @@ const openProfilePopup = () => {
   aboutMe.value = profileAboutMe.textContent;
 
   togglePopup(profilePopup);
+
+  popupCloseEsc(profilePopup);
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
@@ -85,6 +96,7 @@ const openNewCardPopup = () => {
   placeLink.value = '';
 
   togglePopup(placePopup);
+  popupCloseEsc(placePopup);
 };
 
 newCard.addEventListener('click', openNewCardPopup);
@@ -121,14 +133,13 @@ const addingCard = (evt) => {
   togglePopup(placePopup);
 };
 
-const popups = document.querySelectorAll('.popup');
-popups.forEach((item) =>
+popups.forEach((item) => {
   item.addEventListener('click', (evt) => {
     if (evt.target === evt.currentTarget) {
       togglePopup(item);
     }
-  })
-);
+  });
+});
 
 profilePopupForm.addEventListener('submit', editingProfile);
 placePopupForm.addEventListener('submit', addingCard);
