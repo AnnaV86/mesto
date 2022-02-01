@@ -121,5 +121,14 @@ const addingCard = (evt) => {
   togglePopup(placePopup);
 };
 
+const popups = document.querySelectorAll('.popup');
+popups.forEach((item) =>
+  item.addEventListener('click', (evt) => {
+    if (evt.target === evt.currentTarget) {
+      togglePopup(item);
+    }
+  })
+);
+
 profilePopupForm.addEventListener('submit', editingProfile);
 placePopupForm.addEventListener('submit', addingCard);
