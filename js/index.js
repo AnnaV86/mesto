@@ -31,19 +31,19 @@ const clearElement = (element) => {
 
 const closePopup = (element) => {
   element.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEscape);
 };
 
 const checkingStatusButton = (element) => {
+  const buttonElement = element.querySelector('.popup__button');
   const isInputFilled = Array.from(
     element.querySelectorAll('.popup__input')
   ).every((string) => string.value.length > 2);
 
   if (!isInputFilled) {
-    const buttonElement = element.querySelector('.popup__button');
     buttonElement.classList.add(config.inactiveButtonClass);
     buttonElement.disabled = true;
   } else {
-    const buttonElement = element.querySelector('.popup__button');
     buttonElement.classList.remove(config.inactiveButtonClass);
     buttonElement.disabled = false;
   }
@@ -51,20 +51,14 @@ const checkingStatusButton = (element) => {
 
 const openPopup = (element) => {
   element.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEscape);
 };
 
-const popupCloseEsc = (element) => {
-  const checkKeyEsc = (evt) => {
-    if (evt.key === 'Escape') {
-      closePopup(element);
-
-      clearElement(element);
-
-      document.removeEventListener('keydown', checkKeyEsc);
-    }
-  };
-
-  document.addEventListener('keydown', checkKeyEsc);
+const closeByEscape = (evt) => {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
 };
 
 const deleteCard = (cardElement) =>
@@ -106,8 +100,6 @@ const createCard = ({ name, link }) => {
     photoElementBig.alt = name;
 
     openPopup(imgPopup);
-
-    popupCloseEsc(imgPopup);
   });
 
   return cardElement;
@@ -126,8 +118,6 @@ const openProfilePopup = () => {
   openPopup(profilePopup);
 
   checkingStatusButton(profilePopup);
-
-  popupCloseEsc(profilePopup);
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
@@ -139,8 +129,6 @@ const openNewCardPopup = () => {
   openPopup(placePopup);
 
   checkingStatusButton(placePopup);
-
-  popupCloseEsc(placePopup);
 };
 
 newCard.addEventListener('click', openNewCardPopup);
