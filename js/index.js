@@ -33,19 +33,19 @@ const closePopup = (element) => {
   element.classList.remove('popup_opened');
 };
 
-const statusButton = (element) => {
+const checkingStatusButton = (element) => {
   const isInputFilled = Array.from(
     element.querySelectorAll('.popup__input')
   ).every((string) => string.value.length > 2);
 
   if (!isInputFilled) {
-    element
-      .querySelector('.popup__button')
-      .classList.add(config.inactiveButtonClass);
+    const buttonElement = element.querySelector('.popup__button');
+    buttonElement.classList.add(config.inactiveButtonClass);
+    buttonElement.disabled = true;
   } else {
-    element
-      .querySelector('.popup__button')
-      .classList.remove(config.inactiveButtonClass);
+    const buttonElement = element.querySelector('.popup__button');
+    buttonElement.classList.remove(config.inactiveButtonClass);
+    buttonElement.disabled = false;
   }
 };
 
@@ -125,7 +125,7 @@ const openProfilePopup = () => {
 
   openPopup(profilePopup);
 
-  statusButton(profilePopup);
+  checkingStatusButton(profilePopup);
 
   popupCloseEsc(profilePopup);
 };
@@ -138,7 +138,7 @@ const openNewCardPopup = () => {
 
   openPopup(placePopup);
 
-  statusButton(placePopup);
+  checkingStatusButton(placePopup);
 
   popupCloseEsc(placePopup);
 };
