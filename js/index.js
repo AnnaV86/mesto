@@ -19,12 +19,12 @@ const profilePopupForm = profilePopup.querySelector('.popup__form');
 const placePopupForm = placePopup.querySelector('.popup__form');
 const popups = document.querySelectorAll('.popup');
 
-const clearElement = (element) => {
-  element
+const clearPopup = (popup) => {
+  popup
     .querySelectorAll('.popup__error')
     .forEach((item) => item.classList.remove(config.errorClass));
 
-  element
+  popup
     .querySelectorAll(config.inputSelector)
     .forEach((item) => item.classList.remove(config.inputErrorClass));
 };
@@ -139,7 +139,7 @@ popupsClose.forEach((item) => {
 
     closePopup(popup);
 
-    clearElement(popup);
+    clearPopup(popup);
   });
 });
 
@@ -151,7 +151,7 @@ const editingProfile = (evt) => {
 
   closePopup(profilePopup);
 
-  clearElement(profilePopup);
+  clearPopup(profilePopup);
 };
 
 profilePopupForm.addEventListener('submit', editingProfile);
@@ -177,7 +177,7 @@ popups.forEach((item) => {
     if (evt.target === evt.currentTarget) {
       closePopup(item);
 
-      clearElement(item);
+      clearPopup(item);
     }
   });
 });
