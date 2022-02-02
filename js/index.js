@@ -136,10 +136,14 @@ newCard.addEventListener('click', openNewCardPopup);
 popupsClose.forEach((item) => {
   item.addEventListener('click', (evt) => {
     const popup = evt.target.closest('.popup');
+    const previousSibling =
+      item.previousElementSibling.classList.contains('popup__form');
 
     closePopup(popup);
 
-    clearPopup(popup);
+    if (previousSibling) {
+      clearPopup(popup);
+    }
   });
 });
 
@@ -177,7 +181,12 @@ popups.forEach((item) => {
     if (evt.target === evt.currentTarget) {
       closePopup(item);
 
-      clearPopup(item);
+      const popupChildren =
+        item.children[0].classList.contains('popup__container');
+
+      if (popupChildren) {
+        clearPopup(item);
+      }
     }
   });
 });
