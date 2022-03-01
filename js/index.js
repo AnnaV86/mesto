@@ -1,6 +1,6 @@
 import { initialCards } from './initialCards.js';
-import { Card } from './card.js';
-import { config } from './validate.js';
+import { Card } from './Card.js';
+import { config, FormValidator } from './FormValidator.js';
 
 const placePopup = document.querySelector('.popup_type_place');
 const profilePopup = document.querySelector('.popup_type_profile');
@@ -79,6 +79,8 @@ const openProfilePopup = () => {
 
   openPopup(profilePopup);
 
+  const validForm = new FormValidator(config, profilePopup);
+  validForm.enableValidation();
   checkingStatusButton(profilePopup);
 
   clearPopup(profilePopup);
@@ -92,6 +94,8 @@ const openNewCardPopup = () => {
 
   openPopup(placePopup);
 
+  const validForm = new FormValidator(config, placePopup);
+  validForm.enableValidation();
   checkingStatusButton(placePopup);
 
   clearPopup(placePopup);
