@@ -1,4 +1,5 @@
 import { initialCards } from './initialCards.js';
+import { Card } from './card.js';
 import { config } from './validate.js';
 
 const imgPopup = document.querySelector('.popup_type_img');
@@ -61,12 +62,12 @@ const closeByEscape = (evt) => {
   }
 };
 
-const deleteCard = (cardElement) =>
-  cardElement
-    .querySelector('.element-item__delete')
-    .addEventListener('click', () => {
-      cardElement.remove();
-    });
+// const deleteCard = (cardElement) =>
+//   cardElement
+//     .querySelector('.element-item__delete')
+//     .addEventListener('click', () => {
+//       cardElement.remove();
+//     });
 
 const listenerLike = (cardElement) =>
   cardElement
@@ -83,32 +84,32 @@ const renderCard = (card, container, isPrepend) => {
   }
 };
 
-const createCard = ({ name, link }) => {
-  const cardElement = placeCard.querySelector('.element-item').cloneNode(true);
-  const photoElement = cardElement.querySelector('.element-item__photo');
-  cardElement.querySelector('.element-item__title').textContent = name;
-  photoElement.src = link;
-  photoElement.alt = name;
+// const createCard = ({ name, link }) => {
+//   // const photoElement = cardElement.querySelector('.element-item__photo');
+//   // cardElement.querySelector('.element-item__title').textContent = name;
+//   // photoElement.src = link;
+//   // photoElement.alt = name;
 
-  deleteCard(cardElement);
+//   deleteCard(cardElement);
 
-  listenerLike(cardElement);
+//   listenerLike(cardElement);
 
-  photoElement.addEventListener('click', () => {
-    photoElementBigTitle.textContent = name;
-    photoElementBig.src = link;
-    photoElementBig.alt = name;
+//   photoElement.addEventListener('click', () => {
+//     photoElementBigTitle.textContent = name;
+//     photoElementBig.src = link;
+//     photoElementBig.alt = name;
 
-    openPopup(imgPopup);
-  });
+//     openPopup(imgPopup);
+//   });
 
-  return cardElement;
-};
+//   return cardElement;
+// };
 
 initialCards.forEach((element) => {
-  const card = createCard(element);
+  const card = new Card(element, '#element-item');
+  const cardElement = card.generateCard();
 
-  renderCard(card, elements, false);
+  renderCard(cardElement, elements, false);
 });
 
 const openProfilePopup = () => {
@@ -164,9 +165,10 @@ const addingCard = (evt) => {
     link: placeLink.value,
   };
 
-  const card = createCard(newElement);
+  const card = new Card(newElement, '#element-item');
+  const cardElement = card.generateCard();
 
-  renderCard(card, elements, true);
+  renderCard(cardElement, elements, true);
 
   closePopup(placePopup);
 };
