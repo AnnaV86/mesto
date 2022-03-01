@@ -31,21 +31,6 @@ const closePopup = (element) => {
   document.removeEventListener('keydown', closeByEscape);
 };
 
-const checkingStatusButton = (element) => {
-  const buttonElement = element.querySelector('.popup__button');
-  const isInputFilled = Array.from(
-    element.querySelectorAll('.popup__input')
-  ).every((string) => string.value.length > 2);
-
-  if (!isInputFilled) {
-    buttonElement.classList.add(config.inactiveButtonClass);
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.classList.remove(config.inactiveButtonClass);
-    buttonElement.disabled = false;
-  }
-};
-
 const openPopup = (element) => {
   element.classList.add('popup_opened');
   document.addEventListener('keydown', closeByEscape);
@@ -76,12 +61,11 @@ initialCards.forEach((element) => {
 const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
+  const validForm = new FormValidator(config, profilePopup);
 
   openPopup(profilePopup);
 
-  const validForm = new FormValidator(config, profilePopup);
   validForm.enableValidation();
-  checkingStatusButton(profilePopup);
 
   clearPopup(profilePopup);
 };
@@ -91,12 +75,11 @@ profileEditing.addEventListener('click', openProfilePopup);
 const openNewCardPopup = () => {
   placeName.value = '';
   placeLink.value = '';
+  const validForm = new FormValidator(config, placePopup);
 
   openPopup(placePopup);
 
-  const validForm = new FormValidator(config, placePopup);
   validForm.enableValidation();
-  checkingStatusButton(placePopup);
 
   clearPopup(placePopup);
 };
@@ -129,7 +112,6 @@ const addingCard = (evt) => {
     name: placeName.value,
     link: placeLink.value,
   };
-
   const card = new Card(newElement, '#element-item');
   const cardElement = card.generateCard();
 
