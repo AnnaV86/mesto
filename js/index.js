@@ -2,7 +2,6 @@ import { initialCards } from './initialCards.js';
 import { Card } from './card.js';
 import { config } from './validate.js';
 
-const imgPopup = document.querySelector('.popup_type_img');
 const placePopup = document.querySelector('.popup_type_place');
 const profilePopup = document.querySelector('.popup_type_profile');
 const popupsClose = document.querySelectorAll('.popup__close');
@@ -11,11 +10,8 @@ const profileEditing = document.querySelector('.profile__editing');
 const profileAboutMe = document.querySelector('.profile__about-me');
 const nameText = document.querySelector('#profName');
 const aboutMe = document.querySelector('#profAboutMe');
-const placeCard = document.querySelector('#element-item').content;
 const elements = document.querySelector('.elements');
 const newCard = document.querySelector('.profile__new');
-const photoElementBig = document.querySelector('.popup__photo-img');
-const photoElementBigTitle = document.querySelector('.popup__title-img');
 const profilePopupForm = profilePopup.querySelector('.popup__form');
 const placePopupForm = placePopup.querySelector('.popup__form');
 const popups = document.querySelectorAll('.popup');
@@ -62,20 +58,6 @@ const closeByEscape = (evt) => {
   }
 };
 
-// const deleteCard = (cardElement) =>
-//   cardElement
-//     .querySelector('.element-item__delete')
-//     .addEventListener('click', () => {
-//       cardElement.remove();
-//     });
-
-const listenerLike = (cardElement) =>
-  cardElement
-    .querySelector('.element-item__like')
-    .addEventListener('click', (evt) => {
-      evt.target.classList.toggle('like-active');
-    });
-
 const renderCard = (card, container, isPrepend) => {
   if (isPrepend) {
     container.prepend(card);
@@ -83,27 +65,6 @@ const renderCard = (card, container, isPrepend) => {
     container.append(card);
   }
 };
-
-// const createCard = ({ name, link }) => {
-//   // const photoElement = cardElement.querySelector('.element-item__photo');
-//   // cardElement.querySelector('.element-item__title').textContent = name;
-//   // photoElement.src = link;
-//   // photoElement.alt = name;
-
-//   deleteCard(cardElement);
-
-//   listenerLike(cardElement);
-
-//   photoElement.addEventListener('click', () => {
-//     photoElementBigTitle.textContent = name;
-//     photoElementBig.src = link;
-//     photoElementBig.alt = name;
-
-//     openPopup(imgPopup);
-//   });
-
-//   return cardElement;
-// };
 
 initialCards.forEach((element) => {
   const card = new Card(element, '#element-item');
