@@ -18,6 +18,8 @@ const popups = document.querySelectorAll('.popup');
 const photoElementBig = document.querySelector('.popup__photo-img');
 const photoElementBigTitle = document.querySelector('.popup__title-img');
 const imgPopup = document.querySelector('.popup_type_img');
+const validForm1 = new FormValidator(config, profilePopup);
+const validForm2 = new FormValidator(config, placePopup);
 
 const closePopup = (element) => {
   element.classList.remove('popup_opened');
@@ -52,38 +54,39 @@ const renderCard = (card, container, isPrepend) => {
   }
 };
 
-const createCard = (item) => {};
-initialCards.forEach((element) => {
-  const card = new Card(element, '#element-item', handleCardClick);
+const createCard = (item) => {
+  const card = new Card(item, '#element-item', handleCardClick);
   const cardElement = card.generateCard();
+
+  return cardElement;
+};
+
+initialCards.forEach((element) => {
+  const cardElement = createCard(element);
 
   renderCard(cardElement, elements, false);
 });
 
+validForm1.enableValidation();
+validForm2.enableValidation();
+
 const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
-  const validForm = new FormValidator(config, profilePopup);
 
   openPopup(profilePopup);
 
-  validForm.enableValidation();
-
-  validForm._resetValidation();
+  validForm1._resetValidation();
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
 
 const openNewCardPopup = () => {
-  placeName.value = '';
-  placeLink.value = '';
-  const validForm = new FormValidator(config, placePopup);
+  placePopupForm.reset();
 
   openPopup(placePopup);
 
-  validForm.enableValidation();
-
-  validForm._resetValidation();
+  validForm2._resetValidation();
 };
 
 newCard.addEventListener('click', openNewCardPopup);
@@ -96,7 +99,7 @@ closeButtons.forEach((item) => {
   });
 });
 
-const editingProfile = (evt) => {
+const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
 
   profileName.textContent = nameText.value;
@@ -105,24 +108,23 @@ const editingProfile = (evt) => {
   closePopup(profilePopup);
 };
 
-profilePopupForm.addEventListener('submit', editingProfile);
+profilePopupForm.addEventListener('submit', handleProfileFormSubmit);
 
-const addingCard = (evt) => {
+const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
 
   const newElement = {
     name: placeName.value,
     link: placeLink.value,
   };
-  const card = new Card(newElement, '#element-item', handleCardClick);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(newElement);
 
   renderCard(cardElement, elements, true);
 
   closePopup(placePopup);
 };
 
-placePopupForm.addEventListener('submit', addingCard);
+placePopupForm.addEventListener('submit', handleCardFormSubmit);
 popups.forEach((item) => {
   item.addEventListener('mousedown', (evt) => {
     if (evt.target === evt.currentTarget) {
