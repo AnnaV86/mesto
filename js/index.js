@@ -4,7 +4,6 @@ import { config, FormValidator } from './FormValidator.js';
 
 const placePopup = document.querySelector('.popup_type_place');
 const profilePopup = document.querySelector('.popup_type_profile');
-const closeButtons = document.querySelectorAll('.popup__close');
 const profileName = document.querySelector('.profile__name');
 const profileEditing = document.querySelector('.profile__editing');
 const profileAboutMe = document.querySelector('.profile__about-me');
@@ -91,11 +90,14 @@ const openNewCardPopup = () => {
 
 newCard.addEventListener('click', openNewCardPopup);
 
-closeButtons.forEach((item) => {
-  item.addEventListener('click', (evt) => {
-    const popup = evt.target.closest('.popup');
-
-    closePopup(popup);
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains('popup__close')) {
+      closePopup(popup);
+    }
   });
 });
 
@@ -125,10 +127,3 @@ const handleCardFormSubmit = (evt) => {
 };
 
 placePopupForm.addEventListener('submit', handleCardFormSubmit);
-popups.forEach((item) => {
-  item.addEventListener('mousedown', (evt) => {
-    if (evt.target === evt.currentTarget) {
-      closePopup(item);
-    }
-  });
-});
