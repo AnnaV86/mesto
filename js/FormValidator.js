@@ -17,6 +17,12 @@ export class FormValidator {
     this._buttonSubmit = this._form.querySelector(config.submitButtonSelector);
   }
 
+  _resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+  }
   _hasInvalidInput() {
     return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
