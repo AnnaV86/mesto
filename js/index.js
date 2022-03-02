@@ -1,5 +1,5 @@
 import { initialCards } from './initialCards.js';
-import { Card } from './card.js';
+import { Card } from './Card.js';
 import { config, FormValidator } from './FormValidator.js';
 
 const placePopup = document.querySelector('.popup_type_place');
