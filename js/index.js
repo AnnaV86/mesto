@@ -75,7 +75,7 @@ const openProfilePopup = () => {
 
   openPopup(profilePopup);
 
-  validForm1._resetValidation();
+  validForm1.resetValidation();
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
@@ -85,7 +85,7 @@ const openNewCardPopup = () => {
 
   openPopup(placePopup);
 
-  validForm2._resetValidation();
+  validForm2.resetValidation();
 };
 
 newCard.addEventListener('click', openNewCardPopup);
