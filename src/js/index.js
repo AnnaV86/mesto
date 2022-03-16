@@ -7,12 +7,9 @@ import {
   profileAboutMe,
   nameText,
   aboutMe,
-  elements,
   newCard,
   profilePopupForm,
   placePopupForm,
-  photoElementBig,
-  photoElementBigTitle,
 } from './utils/constant.js';
 import { Card } from './components/Card.js';
 import { config, FormValidator } from './components/FormValidator.js';
@@ -20,6 +17,7 @@ import { Section } from './components/Section.js';
 import { Popup } from './components/Popup.js';
 import { PopupWithImage } from './components/PopupWithImage.js';
 import { PopupWithForm } from './components/PopupWithForm.js';
+import { UserInfo } from './components/UserInfo.js';
 
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
@@ -30,27 +28,26 @@ const handleCardClick = (name, link) => {
   popupImg.open();
 };
 
-const renderCard = (card, container, isPrepend) => {
-  if (isPrepend) {
-    container.prepend(card);
-  } else {
-    container.append(card);
-  }
-};
-
 const createCard = (item) => {
-  console.log(item);
   const card = new Card(item, '#element-item', handleCardClick);
   const cardElement = card.generateCard();
 
   return cardElement;
 };
 
-initialCards.forEach((element) => {
-  const cardElement = createCard(element);
+const cardsList = new Section(
+  {
+    items: initialCards,
+    renderer: (cardItem) => {
+      const card = createCard(cardItem);
+      card.setLikeCount;
+      cardsList.addItem(card, false);
+    },
+  },
+  '.elements'
+);
 
-  renderCard(cardElement, elements, false);
-});
+cardsList.renderItems();
 
 validForm1.enableValidation();
 validForm2.enableValidation();
@@ -99,13 +96,24 @@ placePopupForm.addEventListener('submit', () => {
   const form = new PopupWithForm({
     selectorPopup: '.popup_type_place',
     handleFormSubmit: () => {
-      const newElement = {
-        name: placeName.value,
-        link: placeLink.value,
-      };
-      const cardElement = createCard(newElement);
+      const newElement = new Section(
+        {
+          items: [
+            {
+              name: placeName.value,
+              link: placeLink.value,
+            },
+          ],
+          renderer: (cardItem) => {
+            const card = createCard(cardItem);
+            card.setLikeCount;
+            cardsList.addItem(card, true);
+          },
+        },
+        '.elements'
+      );
 
-      renderCard(cardElement, elements, true);
+      newElement.renderItems();
 
       const card = new Popup('.popup_type_place');
 

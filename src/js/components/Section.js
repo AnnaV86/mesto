@@ -2,7 +2,7 @@ export class Section {
   constructor({ items, renderer }, containerSelector) {
     this._initialArray = items;
     this._renderer = renderer;
-    this._container = containerSelector;
+    this._container = document.querySelector(containerSelector);
   }
   renderItems() {
     this._initialArray.forEach((item) => {
@@ -10,7 +10,11 @@ export class Section {
     });
   }
 
-  addItem(element) {
-    this._container.append(element);
+  addItem(card, isPrepend) {
+    if (isPrepend) {
+      this._container.prepend(card);
+    } else {
+      this._container.append(card);
+    }
   }
 }
