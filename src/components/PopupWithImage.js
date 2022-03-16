@@ -4,7 +4,7 @@ import { photoElementBigTitle, photoElementBig } from '../utils/constant.js';
 export class PopupWithImage extends Popup {
   constructor(name, link, selectorPopup) {
     super(selectorPopup);
-		this._name = name;
+    this._name = name;
     this._link = link;
   }
 

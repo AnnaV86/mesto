@@ -2,25 +2,27 @@ import {
   initialCards,
   placePopup,
   profilePopup,
-  profileName,
   profileEditing,
-  profileAboutMe,
   nameText,
   aboutMe,
   newCard,
   profilePopupForm,
   placePopupForm,
-} from './utils/constant.js';
-import { Card } from './components/Card.js';
-import { config, FormValidator } from './components/FormValidator.js';
-import { Section } from './components/Section.js';
-import { Popup } from './components/Popup.js';
-import { PopupWithImage } from './components/PopupWithImage.js';
-import { PopupWithForm } from './components/PopupWithForm.js';
-import { UserInfo } from './components/UserInfo.js';
+} from '../utils/constant.js';
+import { Card } from '../components/Card.js';
+import { config, FormValidator } from '../components/FormValidator.js';
+import { Section } from '../components/Section.js';
+import { Popup } from '../components/Popup.js';
+import { PopupWithImage } from '../components/PopupWithImage.js';
+import { PopupWithForm } from '../components/PopupWithForm.js';
+import { UserInfo } from '../components/UserInfo.js';
 
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
+const userInfo = new UserInfo({
+  NameSelector: '.profile__name',
+  AboutMeSelector: '.profile__about-me',
+});
 
 const handleCardClick = (name, link) => {
   const popupImg = new PopupWithImage(name, link, '.popup_type_img');
@@ -53,8 +55,10 @@ validForm1.enableValidation();
 validForm2.enableValidation();
 
 const openProfilePopup = () => {
-  nameText.value = profileName.textContent;
-  aboutMe.value = profileAboutMe.textContent;
+  const userData = userInfo.getUserInfo();
+
+  nameText.value = userData.nameText;
+  aboutMe.value = userData.aboutMe;
 
   const card = new Popup('.popup_type_profile');
 
@@ -80,9 +84,8 @@ newCard.addEventListener('click', openNewCardPopup);
 profilePopupForm.addEventListener('submit', () => {
   const form = new PopupWithForm({
     selectorPopup: '.popup_type_profile',
-    handleFormSubmit: () => {
-      profileName.textContent = nameText.value;
-      profileAboutMe.textContent = aboutMe.value;
+    handleFormSubmit: (userData) => {
+      userInfo.setUserInfo(userData);
 
       const card = new Popup('.popup_type_profile');
 
