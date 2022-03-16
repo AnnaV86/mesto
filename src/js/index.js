@@ -11,27 +11,23 @@ import {
   newCard,
   profilePopupForm,
   placePopupForm,
-  popups,
   photoElementBig,
   photoElementBigTitle,
-  imgPopup,
 } from './utils/constant.js';
 import { Card } from './components/Card.js';
 import { config, FormValidator } from './components/FormValidator.js';
 import { Section } from './components/Section.js';
 import { Popup } from './components/Popup.js';
+import { PopupWithImage } from './components/PopupWithImage.js';
+import { PopupWithForm } from './components/PopupWithForm.js';
 
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
 
 const handleCardClick = (name, link) => {
-  photoElementBigTitle.textContent = name;
-  photoElementBig.src = link;
-  photoElementBig.alt = name;
+  const popupImg = new PopupWithImage(name, link, '.popup_type_img');
 
-  const card = new Popup('.popup_type_img');
-
-  card.open();
+  popupImg.open();
 };
 
 const renderCard = (card, container, isPrepend) => {
@@ -43,6 +39,7 @@ const renderCard = (card, container, isPrepend) => {
 };
 
 const createCard = (item) => {
+  console.log(item);
   const card = new Card(item, '#element-item', handleCardClick);
   const cardElement = card.generateCard();
 
@@ -83,33 +80,37 @@ const openNewCardPopup = () => {
 
 newCard.addEventListener('click', openNewCardPopup);
 
-const handleProfileFormSubmit = (evt) => {
-  evt.preventDefault();
+profilePopupForm.addEventListener('submit', () => {
+  const form = new PopupWithForm({
+    selectorPopup: '.popup_type_profile',
+    handleFormSubmit: () => {
+      profileName.textContent = nameText.value;
+      profileAboutMe.textContent = aboutMe.value;
 
-  profileName.textContent = nameText.value;
-  profileAboutMe.textContent = aboutMe.value;
+      const card = new Popup('.popup_type_profile');
 
-  const card = new Popup('.popup_type_profile');
+      card.close();
+    },
+  });
+  form.setEventListeners();
+});
 
-  Popup.close();
-};
+placePopupForm.addEventListener('submit', () => {
+  const form = new PopupWithForm({
+    selectorPopup: '.popup_type_place',
+    handleFormSubmit: () => {
+      const newElement = {
+        name: placeName.value,
+        link: placeLink.value,
+      };
+      const cardElement = createCard(newElement);
 
-profilePopupForm.addEventListener('submit', handleProfileFormSubmit);
+      renderCard(cardElement, elements, true);
 
-const handleCardFormSubmit = (evt) => {
-  evt.preventDefault();
+      const card = new Popup('.popup_type_place');
 
-  const newElement = {
-    name: placeName.value,
-    link: placeLink.value,
-  };
-  const cardElement = createCard(newElement);
-
-  renderCard(cardElement, elements, true);
-
-  const card = new Popup('.popup_type_place');
-
-  card.close();
-};
-
-placePopupForm.addEventListener('submit', handleCardFormSubmit);
+      card.close();
+    },
+  });
+  form.setEventListeners();
+});
