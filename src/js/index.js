@@ -19,33 +19,19 @@ import {
 import { Card } from './components/Card.js';
 import { config, FormValidator } from './components/FormValidator.js';
 import { Section } from './components/Section.js';
+import { Popup } from './components/Popup.js';
 
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
-
-const closePopup = (element) => {
-  element.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEscape);
-};
-
-const openPopup = (element) => {
-  element.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEscape);
-};
-
-const closeByEscape = (evt) => {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  }
-};
 
 const handleCardClick = (name, link) => {
   photoElementBigTitle.textContent = name;
   photoElementBig.src = link;
   photoElementBig.alt = name;
 
-  openPopup(imgPopup);
+  const card = new Popup('.popup_type_img');
+
+  card.open();
 };
 
 const renderCard = (card, container, isPrepend) => {
@@ -76,7 +62,9 @@ const openProfilePopup = () => {
   nameText.value = profileName.textContent;
   aboutMe.value = profileAboutMe.textContent;
 
-  openPopup(profilePopup);
+  const card = new Popup('.popup_type_profile');
+
+  card.open();
 
   validForm1.resetValidation();
 };
@@ -86,23 +74,14 @@ profileEditing.addEventListener('click', openProfilePopup);
 const openNewCardPopup = () => {
   placePopupForm.reset();
 
-  openPopup(placePopup);
+  const card = new Popup('.popup_type_place');
+
+  card.open();
 
   validForm2.resetValidation();
 };
 
 newCard.addEventListener('click', openNewCardPopup);
-
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-    if (evt.target.classList.contains('popup__close')) {
-      closePopup(popup);
-    }
-  });
-});
 
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
@@ -110,7 +89,9 @@ const handleProfileFormSubmit = (evt) => {
   profileName.textContent = nameText.value;
   profileAboutMe.textContent = aboutMe.value;
 
-  closePopup(profilePopup);
+  const card = new Popup('.popup_type_profile');
+
+  Popup.close();
 };
 
 profilePopupForm.addEventListener('submit', handleProfileFormSubmit);
@@ -126,7 +107,9 @@ const handleCardFormSubmit = (evt) => {
 
   renderCard(cardElement, elements, true);
 
-  closePopup(placePopup);
+  const card = new Popup('.popup_type_place');
+
+  card.close();
 };
 
 placePopupForm.addEventListener('submit', handleCardFormSubmit);
