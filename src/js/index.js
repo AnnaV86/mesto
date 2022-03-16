@@ -1,22 +1,25 @@
-import { initialCards } from './initialCards.js';
-import { Card } from './Card.js';
-import { config, FormValidator } from './FormValidator.js';
+import {
+  initialCards,
+  placePopup,
+  profilePopup,
+  profileName,
+  profileEditing,
+  profileAboutMe,
+  nameText,
+  aboutMe,
+  elements,
+  newCard,
+  profilePopupForm,
+  placePopupForm,
+  popups,
+  photoElementBig,
+  photoElementBigTitle,
+  imgPopup,
+} from './utils/constant.js';
+import { Card } from './components/Card.js';
+import { config, FormValidator } from './components/FormValidator.js';
+import { Section } from './components/Section.js';
 
-const placePopup = document.querySelector('.popup_type_place');
-const profilePopup = document.querySelector('.popup_type_profile');
-const profileName = document.querySelector('.profile__name');
-const profileEditing = document.querySelector('.profile__editing');
-const profileAboutMe = document.querySelector('.profile__about-me');
-const nameText = document.querySelector('#profName');
-const aboutMe = document.querySelector('#profAboutMe');
-const elements = document.querySelector('.elements');
-const newCard = document.querySelector('.profile__new');
-const profilePopupForm = profilePopup.querySelector('.popup__form');
-const placePopupForm = placePopup.querySelector('.popup__form');
-const popups = document.querySelectorAll('.popup');
-const photoElementBig = document.querySelector('.popup__photo-img');
-const photoElementBigTitle = document.querySelector('.popup__title-img');
-const imgPopup = document.querySelector('.popup_type_img');
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
 
