@@ -6,13 +6,11 @@ import {
   nameText,
   aboutMe,
   newCard,
-  profilePopupForm,
   placePopupForm,
 } from '../utils/constant.js';
 import { Card } from '../components/Card.js';
 import { config, FormValidator } from '../components/FormValidator.js';
 import { Section } from '../components/Section.js';
-import { Popup } from '../components/Popup.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
@@ -75,59 +73,39 @@ const openProfilePopup = () => {
 
 profileEditing.addEventListener('click', openProfilePopup);
 
+const cardFormPopup = new PopupWithForm({
+  selectorPopup: '.popup_type_place',
+  handleFormSubmit: () => {
+    const newElement = new Section(
+      {
+        items: [
+          {
+            name: placeName.value,
+            link: placeLink.value,
+          },
+        ],
+        renderer: (cardItem) => {
+          const card = createCard(cardItem);
+          cardsList.addItem(card, true);
+        },
+      },
+      '.elements'
+    );
+
+    newElement.renderItems();
+
+    cardFormPopup.close();
+  },
+});
+
+cardFormPopup.setEventListeners();
+
 const openNewCardPopup = () => {
   placePopupForm.reset();
 
-  const card = new Popup('.popup_type_place');
-
-  card.open();
+  cardFormPopup.open();
 
   cardFormValidator.resetValidation();
 };
 
 newCard.addEventListener('click', openNewCardPopup);
-
-// profilePopupForm.addEventListener('submit', () => {
-//   const form = new PopupWithForm({
-//     selectorPopup: '.popup_type_profile',
-//     handleFormSubmit: (userData) => {
-//       userInfo.setUserInfo(userData);
-
-//       const card = new Popup('.popup_type_profile');
-
-//       card.close();
-//     },
-//   });
-//   form.setEventListeners();
-// });
-
-placePopupForm.addEventListener('submit', () => {
-  const form = new PopupWithForm({
-    selectorPopup: '.popup_type_place',
-    handleFormSubmit: () => {
-      const newElement = new Section(
-        {
-          items: [
-            {
-              name: placeName.value,
-              link: placeLink.value,
-            },
-          ],
-          renderer: (cardItem) => {
-            const card = createCard(cardItem);
-            card.setLikeCount;
-            cardsList.addItem(card, true);
-          },
-        },
-        '.elements'
-      );
-
-      newElement.renderItems();
-
-      const card = new Popup('.popup_type_place');
-
-      card.close();
-    },
-  });
-  form.setEventListeners();
-});
