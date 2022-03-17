@@ -18,17 +18,16 @@ import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
 import './index.css';
 
-const validForm1 = new FormValidator(config, profilePopup);
-const validForm2 = new FormValidator(config, placePopup);
+const profileFormValidator = new FormValidator(config, profilePopup);
+const cardFormValidator = new FormValidator(config, placePopup);
 const userInfo = new UserInfo({
-  NameSelector: '.profile__name',
-  AboutMeSelector: '.profile__about-me',
+  nameSelector: '.profile__name',
+  aboutMeSelector: '.profile__about-me',
 });
+const popupImg = new PopupWithImage('.popup_type_img');
 
 const handleCardClick = (name, link) => {
-  const popupImg = new PopupWithImage(name, link, '.popup_type_img');
-
-  popupImg.open();
+  popupImg.open(name, link);
 };
 
 const createCard = (item) => {
@@ -43,7 +42,6 @@ const cardsList = new Section(
     items: initialCards,
     renderer: (cardItem) => {
       const card = createCard(cardItem);
-      card.setLikeCount;
       cardsList.addItem(card, false);
     },
   },
@@ -52,8 +50,8 @@ const cardsList = new Section(
 
 cardsList.renderItems();
 
-validForm1.enableValidation();
-validForm2.enableValidation();
+profileFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 
 const openProfilePopup = () => {
   const userData = userInfo.getUserInfo();
@@ -65,7 +63,7 @@ const openProfilePopup = () => {
 
   card.open();
 
-  validForm1.resetValidation();
+  profileFormValidator.resetValidation();
 };
 
 profileEditing.addEventListener('click', openProfilePopup);
@@ -77,7 +75,7 @@ const openNewCardPopup = () => {
 
   card.open();
 
-  validForm2.resetValidation();
+  cardFormValidator.resetValidation();
 };
 
 newCard.addEventListener('click', openNewCardPopup);
