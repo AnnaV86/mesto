@@ -53,15 +53,22 @@ cardsList.renderItems();
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
+const profileFormPopup = new PopupWithForm({
+  selectorPopup: '.popup_type_profile',
+  handleFormSubmit: (userData) => {
+    userInfo.setUserInfo(userData);
+    profileFormPopup.close();
+  },
+});
+profileFormPopup.setEventListeners();
+
 const openProfilePopup = () => {
   const userData = userInfo.getUserInfo();
 
   nameText.value = userData.nameText;
   aboutMe.value = userData.aboutMe;
 
-  const card = new Popup('.popup_type_profile');
-
-  card.open();
+  profileFormPopup.open();
 
   profileFormValidator.resetValidation();
 };
@@ -80,19 +87,19 @@ const openNewCardPopup = () => {
 
 newCard.addEventListener('click', openNewCardPopup);
 
-profilePopupForm.addEventListener('submit', () => {
-  const form = new PopupWithForm({
-    selectorPopup: '.popup_type_profile',
-    handleFormSubmit: (userData) => {
-      userInfo.setUserInfo(userData);
+// profilePopupForm.addEventListener('submit', () => {
+//   const form = new PopupWithForm({
+//     selectorPopup: '.popup_type_profile',
+//     handleFormSubmit: (userData) => {
+//       userInfo.setUserInfo(userData);
 
-      const card = new Popup('.popup_type_profile');
+//       const card = new Popup('.popup_type_profile');
 
-      card.close();
-    },
-  });
-  form.setEventListeners();
-});
+//       card.close();
+//     },
+//   });
+//   form.setEventListeners();
+// });
 
 placePopupForm.addEventListener('submit', () => {
   const form = new PopupWithForm({
