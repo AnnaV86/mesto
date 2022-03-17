@@ -16,6 +16,7 @@ import { Popup } from '../components/Popup.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import './index.css';
 
 const validForm1 = new FormValidator(config, profilePopup);
 const validForm2 = new FormValidator(config, placePopup);
