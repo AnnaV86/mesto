@@ -24,6 +24,8 @@ const userInfo = new UserInfo({
 });
 const popupImg = new PopupWithImage('.popup_type_img');
 
+popupImg.setEventListeners();
+
 const handleCardClick = (name, link) => {
   popupImg.open(name, link);
 };
