@@ -37,21 +37,17 @@ const createCard = (item) => {
   return cardElement;
 };
 
-const renderCard = (item, isPrepend) => {
-  const cardsList = new Section(
-    {
-      items: item,
-      renderer: (cardItem) => {
-        const card = createCard(cardItem);
-        cardsList.addItem(card, isPrepend);
-      },
+const cardsList = new Section(
+  {
+    renderer: (cardItem) => {
+      const card = createCard(cardItem);
+      cardsList.addItem(card);
     },
-    '.elements'
-  );
-  cardsList.renderItems();
-};
+  },
+  '.elements'
+);
 
-renderCard(initialCards, false);
+cardsList.renderItems(initialCards);
 
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();
@@ -81,18 +77,14 @@ profileEditing.addEventListener('click', openProfilePopup);
 const cardFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_place',
   handleFormSubmit: () => {
-    const newElement = [
-      {
-        name: placeName.value,
-        link: placeLink.value,
-      },
-    ];
-    renderCard(newElement, true);
+    const newElement = {
+      name: placeName.value,
+      link: placeLink.value,
+    };
+    cardsList.addItem(createCard(newElement), true);
     cardFormPopup.close();
   },
 });
-
-cardFormPopup.setEventListeners();
 
 const openNewCardPopup = () => {
   placePopupForm.reset();
