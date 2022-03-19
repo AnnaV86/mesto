@@ -86,6 +86,8 @@ const cardFormPopup = new PopupWithForm({
   },
 });
 
+cardFormPopup.setEventListeners();
+
 const openNewCardPopup = () => {
   placePopupForm.reset();
 
