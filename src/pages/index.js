@@ -61,13 +61,14 @@ const cardsList = new Section(
 
 cardsList.renderItems(initialCards);
 
-Promise.all([api.getInitialCards(), api.getUserInfo()]).then((res) => {
-  console.log(res);
-  const [cards, userData] = res;
-  userInfo.setUserInfo(userData);
-  cardsList.renderItems(cards);
-  userId = userId._id;
-});
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+  .then((res) => {
+    console.log('start');
+    const [cards, userData] = res;
+    userInfo.setUserInfo(userData.name, userData.about, userData.avatar);
+    cardsList.renderItems(cards);
+  })
+  .catch((err) => console.log(err));
 
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();
@@ -84,8 +85,8 @@ profileFormPopup.setEventListeners();
 const openProfilePopup = () => {
   const userData = userInfo.getUserInfo();
 
-  nameText.value = userData.nameText;
-  aboutMe.value = userData.aboutMe;
+  nameText.value = userData.name;
+  aboutMe.value = userData.about;
 
   profileFormPopup.open();
 

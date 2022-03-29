@@ -1,24 +1,26 @@
 export class UserInfo {
   constructor({ name, about, avatar }) {
-    this._name = name;
+    this._nameSelector = name;
     this._aboutMeSelector = about;
     this._avatarSelector = avatar;
     this._name = document.querySelector(this._nameSelector);
-    this._aboutMe = document.querySelector(this._aboutMeSelector);
+    this._about = document.querySelector(this._aboutMeSelector);
     this._avatar = document.querySelector(this._avatarSelector);
   }
   getUserInfo() {
     const userData = {
-      nameText: this._name.textContent,
-      aboutMe: this._aboutMe.textContent,
+      name: this._name.textContent,
+      about: this._about.textContent,
     };
 
     return userData;
   }
 
-  setUserInfo(userData) {
-    this._name.textContent = userData.name;
-    this._aboutMe.textContent = userData.about;
-    this._avatar.src = userData.avatar;
+  setUserInfo(name, about, avatar) {
+    console.log(this._name, this._about, this._avatar);
+    console.log(name, about, avatar);
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
   }
 }
