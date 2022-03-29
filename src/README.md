@@ -14,4 +14,4 @@
 
 ### Ссылка на сайт
 
-https://annav86.github.io/mesto/index.html
+https://annav86.github.io/mesto

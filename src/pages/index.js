@@ -14,14 +14,26 @@ import { Section } from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import { Api } from '../components/Api';
 import './index.css';
+
+const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/cohort-39/',
+  headers: {
+    authorization: '948b0f51-8156-492a-af46-4004deceb58a',
+    'Content-Type': 'application/json',
+  },
+});
 
 const profileFormValidator = new FormValidator(config, profilePopup);
 const cardFormValidator = new FormValidator(config, placePopup);
+
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   aboutMeSelector: '.profile__about-me',
+  avatarSelector: '.profile__avatar',
 });
+
 const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
@@ -48,6 +60,14 @@ const cardsList = new Section(
 );
 
 cardsList.renderItems(initialCards);
+
+Promise.all([api.getInitialCards(), api.getUserInfo()]).then((res) => {
+  console.log(res);
+  const [cards, userData] = res;
+  userInfo.setUserInfo(userData);
+  cardsList.renderItems(cards);
+  userId = userId._id;
+});
 
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();
