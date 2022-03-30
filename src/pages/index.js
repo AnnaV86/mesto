@@ -59,13 +59,10 @@ const cardsList = new Section(
   '.elements'
 );
 
-cardsList.renderItems(initialCards);
-
 Promise.all([api.getInitialCards(), api.getUserInfo()])
   .then((res) => {
-    console.log('start');
     const [cards, userData] = res;
-    userInfo.setUserInfo(userData.name, userData.about, userData.avatar);
+    userInfo.setUserInfo(userData);
     cardsList.renderItems(cards);
   })
   .catch((err) => console.log(err));
@@ -76,8 +73,13 @@ cardFormValidator.enableValidation();
 const profileFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_profile',
   handleFormSubmit: (userData) => {
-    userInfo.setUserInfo(userData);
-    profileFormPopup.close();
+    api
+      .patchUserInfo(userData)
+      .then((res) => {
+        userInfo.setUserInfo(res);
+      })
+      .catch((err) => console.log(err))
+      .finally(profileFormPopup.close());
   },
 });
 profileFormPopup.setEventListeners();

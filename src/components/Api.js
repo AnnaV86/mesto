@@ -24,4 +24,22 @@ export class Api {
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
+
+  patchUserInfo(userData) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: userData.profileName,
+        about: userData.profileAboutMe,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
+
+  postNewCard() {}
 }
