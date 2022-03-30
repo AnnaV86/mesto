@@ -1,8 +1,7 @@
 import { Popup } from './Popup.js';
-import { api, cardsList } from '../pages/index.js';
-import { Card } from '../components/Card.js';
+import { api } from '../pages/index.js';
 
-export class PopupDeleteCard extends Popup {
+export class PopupWithConfirmation extends Popup {
   constructor(selectorPopup) {
     super(selectorPopup);
   }

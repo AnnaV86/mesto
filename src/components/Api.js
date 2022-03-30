@@ -7,22 +7,12 @@ export class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   patchUserInfo(userData) {
@@ -33,12 +23,7 @@ export class Api {
         name: userData.profileName,
         about: userData.profileAboutMe,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   postNewCard(newCard) {
@@ -49,48 +34,28 @@ export class Api {
         name: newCard.placeName,
         link: newCard.placeLink,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   deleteCard(id) {
     return fetch(`${this._baseUrl}cards/${id}`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   putLike(id) {
     return fetch(`${this._baseUrl}cards/${id}/likes`, {
       method: 'PUT',
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   deleteLike(id) {
     return fetch(`${this._baseUrl}cards/${id}/likes`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
   }
 
   patchAvatar(avatarLink) {
@@ -100,11 +65,13 @@ export class Api {
       body: JSON.stringify({
         avatar: avatarLink,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then(this._getResponseData);
+  }
+
+  _getResponseData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
 }

@@ -18,8 +18,7 @@ import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { Api } from '../components/Api';
 import './index.css';
-import { Popup } from '../components/Popup.js';
-import { PopupDeleteCard } from '../components/PopupDeleteCard.js';
+import { PopupWithConfirmation } from '../components/PopupWithConfirmation.js';
 
 export const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/cohort-39/',
@@ -63,7 +62,7 @@ const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
 
-const popupDelete = new PopupDeleteCard('.popup_type_delete');
+const popupDelete = new PopupWithConfirmation('.popup_type_delete');
 
 popupDelete.setEventListeners();
 
@@ -90,7 +89,7 @@ const createCard = (item) => {
   return cardElement;
 };
 
-export const cardsList = new Section(
+const cardsList = new Section(
   {
     renderer: (cardItem) => {
       const card = createCard(cardItem);
