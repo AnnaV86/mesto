@@ -103,7 +103,6 @@ const cardFormPopup = new PopupWithForm({
     api
       .postNewCard(newCard)
       .then((res) => {
-        console.log('пришло с сервера', res);
         cardsList.addItem(createCard(res), true);
       })
       .catch((err) => console.log(err))

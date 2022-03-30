@@ -8,6 +8,7 @@
   background-color: unset;
   background-position: center;
   background-repeat: no-repeat;
+  margin-bottom: 3px;
 }
 
 .element-item__like:hover {
