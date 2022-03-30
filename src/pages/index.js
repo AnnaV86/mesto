@@ -16,8 +16,10 @@ import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { Api } from '../components/Api';
 import './index.css';
+import { Popup } from '../components/Popup.js';
+import { PopupDeleteCard } from '../components/PopupDeleteCard.js';
 
-const api = new Api({
+export const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/cohort-39/',
   headers: {
     authorization: '948b0f51-8156-492a-af46-4004deceb58a',
@@ -34,22 +36,49 @@ const userInfo = new UserInfo({
   avatarSelector: '.profile__avatar',
 });
 
+let userId = '';
+
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+  .then((res) => {
+    const [cards, userData] = res;
+    userId = userData._id;
+    userInfo.setUserInfo(userData);
+    cardsList.renderItems(cards);
+  })
+  .catch((err) => console.log(err));
+
 const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
+
+const popupDelete = new PopupDeleteCard('.popup_type_delete');
+
+popupDelete.setEventListeners();
 
 const handleCardClick = (name, link) => {
   popupImg.open(name, link);
 };
 
 const createCard = (item) => {
-  const card = new Card(item, '#element-item', handleCardClick);
+  const card = new Card(
+    item,
+    '#element-item',
+    handleCardClick,
+    handlePopupDelete,
+    userId
+  );
+
+  function handlePopupDelete(cardDelete) {
+    popupDelete.open();
+    popupDelete.setEventListener(cardDelete, card);
+  }
+
   const cardElement = card.generateCard();
 
   return cardElement;
 };
 
-const cardsList = new Section(
+export const cardsList = new Section(
   {
     renderer: (cardItem) => {
       const card = createCard(cardItem);
@@ -58,14 +87,6 @@ const cardsList = new Section(
   },
   '.elements'
 );
-
-Promise.all([api.getInitialCards(), api.getUserInfo()])
-  .then((res) => {
-    const [cards, userData] = res;
-    userInfo.setUserInfo(userData);
-    cardsList.renderItems(cards);
-  })
-  .catch((err) => console.log(err));
 
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();

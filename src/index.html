@@ -18,7 +18,11 @@
       <main class="content">
         <section class="profile">
           <div class="profile__user">
-            <img class="profile__avatar" src="#" alt="Фото профиля" />
+            <img class="profile__avatar" src="" alt="Фото профиля" />
+            <div class="profile__avatar-overlay">
+              <button class="profile__avatar-editing" type="button"></button>
+            </div>
+
             <div class="profile__info">
               <div class="profile__name-edit">
                 <h1 class="profile__name"></h1>
@@ -129,6 +133,29 @@
             class="popup__close"
             type="button"
           ></button>
+        </div>
+      </div>
+      <div class="popup popup_type_delete">
+        <div class="popup__container">
+          <h2 class="popup__heading">Вы уверены?</h2>
+          <button class="popup__button" type="button">Да</button>
+        </div>
+      </div>
+      <div class="popup popup_type_avatar">
+        <div class="popup__container">
+          <h2 class="popup__heading">Обновить аватар</h2>
+          <form class="popup__form" name="NewPlace" novalidate>
+            <input
+              class="popup__input"
+              type="url"
+              name="placeLink"
+              id="placeLink"
+              placeholder="Ссылка на картинку"
+              required
+            />
+            <span class="placeLink-error popup__error"></span>
+            <button class="popup__button" type="submit">Сохранить</button>
+          </form>
         </div>
       </div>
     </div>
