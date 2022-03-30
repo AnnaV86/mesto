@@ -50,6 +50,15 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
   })
   .catch((err) => console.log(err));
 
+const renderLoading = (isLoading, element) => {
+  const button = element.querySelector('.popup__button');
+  if (isLoading) {
+    button.textContent = 'Сохранение...';
+  } else {
+    button.textContent = 'Сохранить';
+  }
+};
+
 const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
@@ -97,14 +106,18 @@ avatarFormValidator.enableValidation();
 
 const profileFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_profile',
-  handleFormSubmit: (userData) => {
+  handleFormSubmit: (userData, element) => {
+    renderLoading(true, element);
     api
       .patchUserInfo(userData)
       .then((res) => {
         userInfo.setUserInfo(res);
       })
       .catch((err) => console.log(err))
-      .finally(profileFormPopup.close());
+      .finally(() => {
+        renderLoading(false, element);
+        profileFormPopup.close();
+      });
   },
 });
 profileFormPopup.setEventListeners();
@@ -124,14 +137,18 @@ profileEditing.addEventListener('click', openProfilePopup);
 
 const cardFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_place',
-  handleFormSubmit: (newCard) => {
+  handleFormSubmit: (newCard, element) => {
+    renderLoading(true, element);
     api
       .postNewCard(newCard)
       .then((res) => {
         cardsList.addItem(createCard(res), true);
       })
       .catch((err) => console.log(err))
-      .finally(cardFormPopup.close());
+      .finally(() => {
+        renderLoading(false, element);
+        cardFormPopup.close();
+      });
   },
 });
 
@@ -149,14 +166,18 @@ newCard.addEventListener('click', openNewCardPopup);
 
 const avatarFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_avatar',
-  handleFormSubmit: (link) => {
+  handleFormSubmit: (link, element) => {
+    renderLoading(true, element);
     api
       .patchAvatar(link.avatarLink)
       .then((res) => {
         userInfo.setUserInfo(res);
       })
       .catch((err) => console.log(err))
-      .finally(avatarFormPopup.close());
+      .finally(() => {
+        renderLoading(false, element);
+        avatarFormPopup.close();
+      });
   },
 });
 

@@ -73,7 +73,6 @@ export class FormValidator {
     });
   }
   enableValidation() {
-    console.log('start');
     this._form.addEventListener('submit', (evt) => evt.preventDefault());
 
     this._setEventListeners();

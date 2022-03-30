@@ -94,7 +94,6 @@ export class Api {
   }
 
   patchAvatar(avatarLink) {
-    console.log(avatarLink);
     return fetch(`${this._baseUrl}users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
