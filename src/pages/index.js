@@ -99,13 +99,15 @@ profileEditing.addEventListener('click', openProfilePopup);
 
 const cardFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_place',
-  handleFormSubmit: () => {
-    const newElement = {
-      name: placeName.value,
-      link: placeLink.value,
-    };
-    cardsList.addItem(createCard(newElement), true);
-    cardFormPopup.close();
+  handleFormSubmit: (newCard) => {
+    api
+      .postNewCard(newCard)
+      .then((res) => {
+        console.log('пришло с сервера', res);
+        cardsList.addItem(createCard(res), true);
+      })
+      .catch((err) => console.log(err))
+      .finally(cardFormPopup.close());
   },
 });
 
