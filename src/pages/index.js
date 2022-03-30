@@ -1,12 +1,14 @@
 import {
-  initialCards,
   placePopup,
   profilePopup,
+  avatarPopup,
   profileEditing,
   nameText,
   aboutMe,
   newCard,
   placePopupForm,
+  avatarPopupForm,
+  avatarEditing,
 } from '../utils/constant.js';
 import { Card } from '../components/Card.js';
 import { config, FormValidator } from '../components/FormValidator.js';
@@ -29,6 +31,7 @@ export const api = new Api({
 
 const profileFormValidator = new FormValidator(config, profilePopup);
 const cardFormValidator = new FormValidator(config, placePopup);
+const avatarFormValidator = new FormValidator(config, avatarPopup);
 
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
@@ -90,6 +93,7 @@ export const cardsList = new Section(
 
 profileFormValidator.enableValidation();
 cardFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
 
 const profileFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_profile',
@@ -142,3 +146,28 @@ const openNewCardPopup = () => {
 };
 
 newCard.addEventListener('click', openNewCardPopup);
+
+const avatarFormPopup = new PopupWithForm({
+  selectorPopup: '.popup_type_avatar',
+  handleFormSubmit: (link) => {
+    api
+      .patchAvatar(link.avatarLink)
+      .then((res) => {
+        userInfo.setUserInfo(res);
+      })
+      .catch((err) => console.log(err))
+      .finally(avatarFormPopup.close());
+  },
+});
+
+avatarFormPopup.setEventListeners();
+
+const openAvatarPopup = () => {
+  avatarPopupForm.reset();
+
+  avatarFormPopup.open();
+
+  avatarFormValidator.resetValidation();
+};
+
+avatarEditing.addEventListener('click', openAvatarPopup);
