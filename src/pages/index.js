@@ -9,6 +9,8 @@ import {
   placePopupForm,
   avatarPopupForm,
   avatarEditing,
+  photoElementBigTitle,
+  photoElementBig,
 } from '../utils/constant.js';
 import { Card } from '../components/Card.js';
 import { config, FormValidator } from '../components/FormValidator.js';
@@ -49,7 +51,11 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
   })
   .catch((err) => console.log(err));
 
-const popupImg = new PopupWithImage('.popup_type_img');
+const popupImg = new PopupWithImage(
+  '.popup_type_img',
+  photoElementBigTitle,
+  photoElementBig
+);
 
 popupImg.setEventListeners();
 
@@ -171,8 +177,6 @@ const cardFormPopup = new PopupWithForm({
 cardFormPopup.setEventListeners();
 
 const openNewCardPopup = () => {
-  placePopupForm.reset();
-
   cardFormPopup.open();
 
   cardFormValidator.resetValidation();
@@ -198,8 +202,6 @@ const avatarFormPopup = new PopupWithForm({
 avatarFormPopup.setEventListeners();
 
 const openAvatarPopup = () => {
-  avatarPopupForm.reset();
-
   avatarFormPopup.open();
 
   avatarFormValidator.resetValidation();

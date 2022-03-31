@@ -1,15 +1,16 @@
 import { Popup } from './Popup.js';
-import { photoElementBigTitle, photoElementBig } from '../utils/constant.js';
 
 export class PopupWithImage extends Popup {
-  constructor(selectorPopup) {
+  constructor(selectorPopup, photoElementBigTitle, photoElementBig) {
     super(selectorPopup);
+    this._photoBigTitle = photoElementBigTitle;
+    this._photoBig = photoElementBig;
   }
 
   open(name, link) {
-    photoElementBigTitle.textContent = name;
-    photoElementBig.src = link;
-    photoElementBig.alt = name;
+    this._photoBigTitle.textContent = name;
+    this._photoBig.src = link;
+    this._photoBig.alt = name;
     super.open();
   }
 }
