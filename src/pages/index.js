@@ -49,15 +49,6 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
   })
   .catch((err) => console.log(err));
 
-const renderLoading = (isLoading, element) => {
-  const button = element.querySelector('.popup__button');
-  if (isLoading) {
-    button.textContent = 'Сохранение...';
-  } else {
-    button.textContent = 'Сохранить';
-  }
-};
-
 const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
@@ -136,13 +127,13 @@ avatarFormValidator.enableValidation();
 const profileFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_profile',
   handleFormSubmit: (userData, element) => {
-    renderLoading(true, element);
+    profileFormPopup.renderLoading('Сохранение...');
     api
       .patchUserInfo(userData)
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .then(() => renderLoading(false, element))
+      .then(() => profileFormPopup.renderLoading())
       .then(() => profileFormPopup.close())
       .catch((err) => console.log(err));
   },
@@ -165,13 +156,13 @@ profileEditing.addEventListener('click', openProfilePopup);
 const cardFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_place',
   handleFormSubmit: (newCard, element) => {
-    renderLoading(true, element);
+    cardFormPopup.renderLoading('Сохранение...');
     api
       .postNewCard(newCard)
       .then((res) => {
         cardsList.addItem(createCard(res), true);
       })
-      .then(() => renderLoading(false, element))
+      .then(() => cardFormPopup.renderLoading())
       .then(() => cardFormPopup.close())
       .catch((err) => console.log(err));
   },
@@ -192,13 +183,13 @@ newCard.addEventListener('click', openNewCardPopup);
 const avatarFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_avatar',
   handleFormSubmit: (link, element) => {
-    renderLoading(true, element);
+    avatarFormPopup.renderLoading('Сохранение...');
     api
       .patchAvatar(link.avatarLink)
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .then(() => renderLoading(false, element))
+      .then(() => avatarFormPopup.renderLoading())
       .then(() => avatarFormPopup.close())
       .catch((err) => console.log(err));
   },

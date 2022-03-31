@@ -6,9 +6,10 @@ export class PopupWithForm extends Popup {
     this._popupElement = document.querySelector(selectorPopup);
     this._handleFormSubmit = handleFormSubmit;
     this._handleSubmit = this._handleSubmit.bind(this);
+    this._inputList = this._element.querySelectorAll('.popup__input');
+    this._button = this._element.querySelector('.popup__button');
   }
   _getInputValues() {
-    this._inputList = this._element.querySelectorAll('.popup__input');
     this._formValues = {};
     this._inputList.forEach((input) => {
       this._formValues[input.name] = input.value;
@@ -29,5 +30,9 @@ export class PopupWithForm extends Popup {
     super.close();
     this._form.reset();
     this._form.removeEventListener('submit', this._handleSubmit);
+  }
+
+  renderLoading(buttonText = 'Coхранить') {
+    this._button.textContent = buttonText;
   }
 }
