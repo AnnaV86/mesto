@@ -6,8 +6,6 @@ import {
   nameText,
   aboutMe,
   newCard,
-  placePopupForm,
-  avatarPopupForm,
   avatarEditing,
   photoElementBigTitle,
   photoElementBig,
@@ -33,6 +31,10 @@ const api = new Api({
 const profileFormValidator = new FormValidator(config, profilePopup);
 const cardFormValidator = new FormValidator(config, placePopup);
 const avatarFormValidator = new FormValidator(config, avatarPopup);
+
+profileFormValidator.enableValidation();
+cardFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
 
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
@@ -125,10 +127,6 @@ const cardsList = new Section(
   },
   '.elements'
 );
-
-profileFormValidator.enableValidation();
-cardFormValidator.enableValidation();
-avatarFormValidator.enableValidation();
 
 const profileFormPopup = new PopupWithForm({
   selectorPopup: '.popup_type_profile',
