@@ -1,24 +1,18 @@
 import { Popup } from './Popup.js';
-import { api } from '../pages/index.js';
-
 export class PopupWithConfirmation extends Popup {
   constructor(selectorPopup) {
     super(selectorPopup);
   }
 
-  _deleteAcceptance(cardDelete, card) {
-    api
-      .deleteCard(cardDelete._id)
-      .then(() => card.deleteCard())
-      .catch((err) => console.log(err))
-      .finally(this.close());
+  callBack(deleteCard) {
+    this._deleteCard = deleteCard;
   }
-  setEventListener(cardDelete, card) {
+
+  setEventListeners() {
     super.setEventListeners();
-    this._element
-      .querySelector('.popup__button')
-      .addEventListener('click', () => {
-        this._deleteAcceptance(cardDelete, card);
-      });
+    this._element.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this._deleteCard();
+    });
   }
 }

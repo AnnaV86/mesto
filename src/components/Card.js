@@ -1,7 +1,14 @@
-import { api } from '../pages/index.js';
-
 export class Card {
-  constructor(card, cardSelector, handleCardClick, handlePopupDelete, userId) {
+  constructor(
+    card,
+    cardSelector,
+    handleCardClick,
+    handlePopupDelete,
+    userId,
+    putLike,
+    deleteLike,
+    deleteCard
+  ) {
     this._userId = userId;
     this._text = card.name;
     this._link = card.link;
@@ -12,6 +19,9 @@ export class Card {
     this._handlePopupDelete = handlePopupDelete;
     this._card = card;
     this._owner = card.owner._id === userId;
+    this._putLike = putLike;
+    this._deleteLike = deleteLike;
+    this._deleteCard = deleteCard;
   }
 
   _getTemplate() {
@@ -25,55 +35,43 @@ export class Card {
 
   _setEventListeners() {
     if (this._owner) {
-      this._element
-        .querySelector('.element-item__delete')
-        .addEventListener('click', () => this._handlePopupDelete(this._card));
+      this._buttonDelete.addEventListener('click', () =>
+        this._handlePopupDelete(this._card, this._element)
+      );
     }
     this._likeButton.addEventListener('click', () => {
-      this._like();
+      this._like(this._card);
     });
     this._photo.addEventListener('click', () => {
       this._handleCardClick(this._text, this._link);
     });
   }
 
-  deleteCard() {
-    this._element.remove();
-    this._card = null;
-  }
-
   _like() {
     if (this._likeButton.classList.contains('like-active')) {
-      this._likeButton.classList.remove('like-active');
-      api
-        .deleteLike(this._card._id)
-        .then((res) => (this._likeCount.textContent = res.likes.length))
-        .catch((err) => console.log(err));
+      this._deleteLike(this._card, this._likeCount, this._likeButton);
     } else {
-      this._likeButton.classList.add('like-active');
-      api
-        .putLike(this._card._id)
-        .then((res) => (this._likeCount.textContent = res.likes.length))
-        .catch((err) => console.log(err));
+      this._putLike(this._card, this._likeCount, this._likeButton);
     }
   }
   generateCard() {
     this._element = this._getTemplate();
     this._likeCount = this._element.querySelector('.like-count');
+    this._buttonDelete = this._element.querySelector('.element-item__delete');
+    this._likeButton = this._element.querySelector('.element-item__like');
     this._element.querySelector('.element-item__title').textContent =
       this._text;
     this._photo = this._element.querySelector('.element-item__photo');
     this._photo.src = this._link;
     this._photo.alt = this._text;
-    this._likeButton = this._element.querySelector('.element-item__like');
+
     if (this._myLike) {
       this._likeButton.classList.add('like-active');
     }
     this._likeCount.textContent = this._likeLength;
+
     if (this._owner) {
-      this._element
-        .querySelector('.element-item__delete')
-        .classList.add('element-item__delete_type_active');
+      this._buttonDelete.classList.add('element-item__delete_type_active');
     }
     this._setEventListeners();
 

@@ -20,7 +20,7 @@ import { Api } from '../components/Api';
 import './index.css';
 import { PopupWithConfirmation } from '../components/PopupWithConfirmation.js';
 
-export const api = new Api({
+const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/cohort-39/',
   headers: {
     authorization: '948b0f51-8156-492a-af46-4004deceb58a',
@@ -62,6 +62,17 @@ const popupImg = new PopupWithImage('.popup_type_img');
 
 popupImg.setEventListeners();
 
+const deleteCard = (cardDelete, element) => {
+  api
+    .deleteCard(cardDelete._id)
+    .then(() => {
+      element.remove();
+      cardDelete = null;
+    })
+    .then(() => popupDelete.close())
+    .catch((err) => console.log(err));
+};
+
 const popupDelete = new PopupWithConfirmation('.popup_type_delete');
 
 popupDelete.setEventListeners();
@@ -76,12 +87,31 @@ const createCard = (item) => {
     '#element-item',
     handleCardClick,
     handlePopupDelete,
-    userId
+    userId,
+    putLike,
+    deleteLike
   );
 
-  function handlePopupDelete(cardDelete) {
+  function handlePopupDelete(cardDelete, element) {
     popupDelete.open();
-    popupDelete.setEventListener(cardDelete, card);
+    popupDelete.callBack(() => {
+      deleteCard(cardDelete, element);
+    });
+  }
+  function putLike(card, likeCount, likeButton) {
+    api
+      .putLike(card._id)
+      .then((res) => (likeCount.textContent = res.likes.length))
+      .then(() => likeButton.classList.add('like-active'))
+      .catch((err) => console.log(err));
+  }
+
+  function deleteLike(card, likeCount, likeButton) {
+    api
+      .deleteLike(card._id)
+      .then((res) => (likeCount.textContent = res.likes.length))
+      .then(() => likeButton.classList.remove('like-active'))
+      .catch((err) => console.log(err));
   }
 
   const cardElement = card.generateCard();
@@ -112,11 +142,9 @@ const profileFormPopup = new PopupWithForm({
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        renderLoading(false, element);
-        profileFormPopup.close();
-      });
+      .then(() => renderLoading(false, element))
+      .then(() => profileFormPopup.close())
+      .catch((err) => console.log(err));
   },
 });
 profileFormPopup.setEventListeners();
@@ -143,11 +171,9 @@ const cardFormPopup = new PopupWithForm({
       .then((res) => {
         cardsList.addItem(createCard(res), true);
       })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        renderLoading(false, element);
-        cardFormPopup.close();
-      });
+      .then(() => renderLoading(false, element))
+      .then(() => cardFormPopup.close())
+      .catch((err) => console.log(err));
   },
 });
 
@@ -172,11 +198,9 @@ const avatarFormPopup = new PopupWithForm({
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        renderLoading(false, element);
-        avatarFormPopup.close();
-      });
+      .then(() => renderLoading(false, element))
+      .then(() => avatarFormPopup.close())
+      .catch((err) => console.log(err));
   },
 });
 
