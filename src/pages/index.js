@@ -93,23 +93,22 @@ const createCard = (item) => {
 
   function handlePopupDelete(cardDelete, element) {
     popupDelete.open();
-    popupDelete.callBack(() => {
+    popupDelete.deleteAccept(() => {
       deleteCard(cardDelete, element);
     });
   }
-  function putLike(card, likeCount, likeButton) {
+
+  function putLike(cardPut) {
     api
-      .putLike(card._id)
-      .then((res) => (likeCount.textContent = res.likes.length))
-      .then(() => likeButton.classList.add('like-active'))
+      .putLike(cardPut._card._id)
+      .then((res) => card.addActiveLike(res))
       .catch((err) => console.log(err));
   }
 
-  function deleteLike(card, likeCount, likeButton) {
+  function deleteLike(cardDelete) {
     api
-      .deleteLike(card._id)
-      .then((res) => (likeCount.textContent = res.likes.length))
-      .then(() => likeButton.classList.remove('like-active'))
+      .deleteLike(cardDelete._card._id)
+      .then((res) => card.deleteActiveLike(res))
       .catch((err) => console.log(err));
   }
 
@@ -137,9 +136,9 @@ const profileFormPopup = new PopupWithForm({
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .then(() => profileFormPopup.renderLoading())
       .then(() => profileFormPopup.close())
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => profileFormPopup.renderLoading());
   },
 });
 profileFormPopup.setEventListeners();
@@ -166,9 +165,9 @@ const cardFormPopup = new PopupWithForm({
       .then((res) => {
         cardsList.addItem(createCard(res), true);
       })
-      .then(() => cardFormPopup.renderLoading())
       .then(() => cardFormPopup.close())
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => cardFormPopup.renderLoading());
   },
 });
 
@@ -191,9 +190,9 @@ const avatarFormPopup = new PopupWithForm({
       .then((res) => {
         userInfo.setUserInfo(res);
       })
-      .then(() => avatarFormPopup.renderLoading())
       .then(() => avatarFormPopup.close())
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => avatarFormPopup.renderLoading());
   },
 });
 

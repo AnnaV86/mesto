@@ -4,7 +4,7 @@ export class PopupWithConfirmation extends Popup {
     super(selectorPopup);
   }
 
-  callBack(deleteCard) {
+  deleteAccept(deleteCard) {
     this._deleteCard = deleteCard;
   }
 

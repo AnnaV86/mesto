@@ -7,7 +7,8 @@ export class Card {
     userId,
     putLike,
     deleteLike,
-    deleteCard
+    deleteCard,
+    handleLike
   ) {
     this._userId = userId;
     this._text = card.name;
@@ -40,18 +41,27 @@ export class Card {
       );
     }
     this._likeButton.addEventListener('click', () => {
-      this._like(this._card);
+      this._like();
     });
     this._photo.addEventListener('click', () => {
       this._handleCardClick(this._text, this._link);
     });
   }
 
+  addActiveLike(card) {
+    this._likeCount.textContent = card.likes.length;
+    this._likeButton.classList.add('like-active');
+  }
+
+  deleteActiveLike(card) {
+    this._likeCount.textContent = card.likes.length;
+    this._likeButton.classList.remove('like-active');
+  }
   _like() {
     if (this._likeButton.classList.contains('like-active')) {
-      this._deleteLike(this._card, this._likeCount, this._likeButton);
+      this._deleteLike(this);
     } else {
-      this._putLike(this._card, this._likeCount, this._likeButton);
+      this._putLike(this);
     }
   }
   generateCard() {
